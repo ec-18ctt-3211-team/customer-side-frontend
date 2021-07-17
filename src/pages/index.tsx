@@ -7,7 +7,6 @@ import BookingHistory from 'pages/booking-history';
 import UserProfile from './user-profile';
 import SuccessBooking from './success-booking';
 
-
 const Pages = {
   Viewaplace,
   RoomsOfHost,

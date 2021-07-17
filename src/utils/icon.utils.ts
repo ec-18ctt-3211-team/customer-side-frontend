@@ -10,6 +10,7 @@ import phoneOutline from '@iconify/icons-teenyicons/phone-outline';
 import passwordOutline from '@iconify/icons-teenyicons/password-outline';
 import addSmallOutline from '@iconify/icons-teenyicons/add-small-outline';
 import minusSmallOutline from '@iconify/icons-teenyicons/minus-small-outline';
+import logoutOutline from '@iconify/icons-teenyicons/logout-outline';
 
 export {
   Icon,
@@ -25,4 +26,5 @@ export {
   passwordOutline,
   addSmallOutline,
   minusSmallOutline,
+  logoutOutline,
 };
