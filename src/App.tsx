@@ -4,7 +4,7 @@ import { SITE_PAGES } from 'constants/pages.const';
 import Pages from './pages';
 
 function App() {
-  const [isAuthorized, setAuthorized] = useState(true);
+  const [isAuthorized, setAuthorized] = useState(false);
   return (
     <Router>
       <Switch>

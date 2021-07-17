@@ -7,7 +7,7 @@ interface Props {
 export default function Button(props: Props): JSX.Element {
   return (
     <div
-      onClick={() => props.onClick}
+      onClick={() => props.onClick && props.onClick()}
       className={[
         'flex justify-center items-center rounded-xl w-full h-full',
         'text-brown-700 bg-brown-200 font-semibold uppercase',

@@ -3,6 +3,8 @@ import { ICustomerInfo, IBookingInfo } from 'interfaces/booking.interface';
 import { IRoomDetail } from 'interfaces/room.interface';
 import { getDateString } from 'utils/datetime.utils';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { SITE_PAGES } from 'constants/pages.const';
 
 interface Props {
   customer: ICustomerInfo;
@@ -50,9 +52,9 @@ export default function ReviewInfo(props: Props): JSX.Element {
         <strong>Payment method:</strong>
         <div className="uppercase">{props.customer.payment_method}</div>
       </div>
-      <div className="w-2/3 h-12">
+      <Link to={SITE_PAGES.SUCCESS_BOOKING.path} className="w-2/3 h-12">
         <Button>Confirm</Button>
-      </div>
+      </Link>
     </div>
   );
 }

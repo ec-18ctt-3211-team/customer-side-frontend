@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Layout, DivPx } from 'components/common';
-import { BookingTable, UserInfo } from 'components/section/user-profile';
+import { Layout, DivPx, Form } from 'components/common';
+import { BookingTable } from 'components/section/user-profile';
 
 interface Props {
   isAuthorized: boolean;
@@ -21,13 +21,26 @@ export default function UserProfile(props: Props): JSX.Element {
     phone_number: '0123456789',
     email: 'nhily@gmail.com',
   });
+
+  function updateProfile() {
+    console.log('send data to DB for update');
+  }
+
   return (
     <Layout
       isAuthorized={props.isAuthorized}
       setAuthorized={props.setAuthorized}
     >
       <div className="-m-8 p-8 bg-gray-200 w-screen h-screen flex justify-between">
-        <UserInfo userProfile={userInfo} />
+        <div className="w-[450px] h-[500px]">
+          <Form
+            title="User profile"
+            type="profile"
+            button={{ label: 'Update', onClick: () => updateProfile() }}
+            userInfo={userInfo}
+            setUserInfo={setUserInfo}
+          />
+        </div>
         <DivPx size={48} />
         <BookingTable
           booking_history={[

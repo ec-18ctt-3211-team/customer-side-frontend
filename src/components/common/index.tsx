@@ -8,10 +8,13 @@ import Searchbar from './searchbar';
 import DivPx from './divpx';
 import { Pagination, PaginationItem } from './pagination';
 import SelectOption from './options';
+import Form from './Form';
+import Popup from './popup';
 
 export type borderType = 'full' | 'line';
 export type inputType = 'text' | 'password';
 export type positionType = 'left' | 'right' | 'top' | 'bottom';
+export type formType = 'login' | 'signup' | 'profile';
 
 export {
   Button,
@@ -25,4 +28,6 @@ export {
   Pagination,
   PaginationItem,
   SelectOption,
+  Form,
+  Popup,
 };
