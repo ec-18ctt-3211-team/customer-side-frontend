@@ -4,6 +4,8 @@
 
 Frontend repository
 
+Customer side
+
 Authors: Ly Ngoc Nhi, Truong Cong Anh
 
 Deploy: https://serene-nobel-5a771d.netlify.app/
