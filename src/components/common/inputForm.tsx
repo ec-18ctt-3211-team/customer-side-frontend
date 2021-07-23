@@ -90,7 +90,14 @@ export default function Form(props: Props): JSX.Element {
           placeholder="password"
           icon={{ icon: <Icon icon={passwordOutline} />, position: 'right' }}
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            if (props.type === 'login')
+              props.setUserInfo({
+                ...props.userInfo,
+                password: e.target.value,
+              });
+            else setPassword(e.target.value);
+          }}
         />
       </div>
 
@@ -103,11 +110,11 @@ export default function Form(props: Props): JSX.Element {
             placeholder="confirm password"
             icon={{ icon: <Icon icon={passwordOutline} />, position: 'right' }}
             onChange={(e) => {
-              if (password === e.target.value) {
+              if (password === e.target.value && password !== '') {
                 setMatched(true);
                 props.setUserInfo({
                   ...props.userInfo,
-                  new_password: e.target.value,
+                  password: e.target.value,
                 });
               } else setMatched(false);
             }}

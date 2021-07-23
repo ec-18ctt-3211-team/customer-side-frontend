@@ -4,6 +4,8 @@ import { SITE_PAGES } from 'constants/pages.const';
 import { useState } from 'react';
 import { IUserInfo } from 'interfaces/user.interface';
 import { Icon, logoutOutline } from 'utils/icon.utils';
+import { BASE, POST } from 'utils/fetcher.utils';
+import { ENDPOINT_URL } from 'constants/api.const';
 
 interface Props {
   isAuthorized: boolean;
@@ -18,15 +20,43 @@ export default function Navbar(props: Props): JSX.Element {
     username: '',
     phone_number: '',
     email: '',
+    password: '',
   });
-  const [isShow, setShow] = useState<'login' | 'signup' | null>(null);
+  const [isShow, setShow] = useState<'login' | 'signup' | 'loading' | null>(
+    null,
+  );
 
-  function signup() {
-    setShow(null);
+  async function signup() {
+    if (!userInfo.password) return;
+    const payload = {
+      email: userInfo.email,
+      name: userInfo.username,
+      password: userInfo.password,
+      phone: userInfo.phone_number,
+    };
+    setShow('loading');
+    const response = await POST(ENDPOINT_URL.POST.register, payload);
+    if (response.data.valid) setShow('login');
+    else alert(response.data.message);
   }
 
-  function login() {
-    props.setAuthorized(true);
+  async function login() {
+    if (!userInfo.password) return;
+    const payload = {
+      email: userInfo.email,
+      password: userInfo.password,
+    };
+    setShow('loading');
+    const response = await POST(ENDPOINT_URL.POST.login, payload);
+    if (response.data.valid) {
+      props.setAuthorized(true);
+      setUserInfo({
+        ...userInfo,
+        userID: response.data.userID,
+        username: response.data.name,
+        ava: BASE + response.data.ava,
+      });
+    } else alert(response.data.message);
     setShow(null);
   }
 
@@ -61,9 +91,15 @@ export default function Navbar(props: Props): JSX.Element {
                   'hover:text-brown-100 hover:bg-brown-600',
                 ].join(' ')}
               >
-                {/* <img src="#" alt="user-img" className="w-6 h-6 bg-gray-300 rounded-full" /> */}
-                <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
-                <span className="px-2">Username</span>
+                {userInfo.ava ? (
+                  <img
+                    src={userInfo.ava}
+                    className="w-6 h-6 bg-gray-300 rounded-full"
+                  />
+                ) : (
+                  <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
+                )}
+                <span className="px-2">{userInfo.username}</span>
               </Link>
               <span
                 className="px-4"
@@ -111,6 +147,7 @@ export default function Navbar(props: Props): JSX.Element {
           </div>
         </Popup>
       )}
+      {isShow === 'loading' && <Popup>loading...</Popup>}
     </div>
   );
 }
