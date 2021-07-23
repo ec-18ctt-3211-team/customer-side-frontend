@@ -19,8 +19,8 @@ export default function ListOfRooms(props: Props): JSX.Element {
   const city = path[path.length - 1];
   const [currentPage, setCurrentPage] = useState(0);
   const [listOfRooms, setListOfRooms] = useState<IRoomDetail[]>([]);
-  const [totalResult, setTotalResult] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalResult, setTotalResult] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
   async function fetchRooms() {
     const response = await GET(
