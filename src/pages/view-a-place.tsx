@@ -26,7 +26,6 @@ export default function ViewAPlace(props: Props): JSX.Element {
       _id: response.data.room.host_id,
       host_name: 'Luxury house',
     });
-    console.log(response.data.room);
   }
 
   useEffect(() => {

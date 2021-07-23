@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Layout, Pagination } from 'components/common';
 import { Filterbar, RoomCard } from 'components/section/list_of_rooms';
-import { IRoomDetail } from 'interfaces/room.interface';
+import { IRoomDetail, IResponse } from 'interfaces/room.interface';
 import { GET } from 'utils/fetcher.utils';
 import { ENDPOINT_URL } from 'constants/api.const';
 
@@ -13,22 +14,27 @@ interface Props {
 }
 
 export default function ListOfRooms(props: Props): JSX.Element {
+  const location = useLocation();
+  const path = location.pathname.split('/');
+  const city = path[path.length - 1];
   const [currentPage, setCurrentPage] = useState(0);
   const [listOfRooms, setListOfRooms] = useState<IRoomDetail[]>([]);
+  const [totalResult, setTotalResult] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   async function fetchRooms() {
     const response = await GET(
-      ENDPOINT_URL.GET.getRoomsByCity('Ho_Chi_Minh', LIMIT, currentPage + 1),
+      ENDPOINT_URL.GET.getRoomsByCity(city, LIMIT, currentPage + 1),
     );
 
-    const rooms = response.data.rooms;
-    const numberOfPages = Math.floor(rooms.length / LIMIT);
+    const data: IResponse = response.data;
+    const numberOfPages = Math.floor(data.rooms.length / LIMIT);
 
-    setListOfRooms(rooms);
+    setListOfRooms(data.rooms);
     setTotalPages(
-      rooms.length % LIMIT === 0 ? numberOfPages : numberOfPages + 1,
+      data.rooms.length % LIMIT === 0 ? numberOfPages : numberOfPages + 1,
     );
+    setTotalResult(data.total);
   }
 
   useEffect(() => {
@@ -42,7 +48,7 @@ export default function ListOfRooms(props: Props): JSX.Element {
       allowSearch
     >
       <div className="flex flex-col min-h-[80vh]">
-        <Filterbar location="Ho Chi Minh city" total_result={1234} />
+        <Filterbar location={city} total_result={totalResult} />
         <div className="flex flex-wrap w-full px-6">
           {listOfRooms.map((room, index) => {
             return <RoomCard detail={room} key={index} />;

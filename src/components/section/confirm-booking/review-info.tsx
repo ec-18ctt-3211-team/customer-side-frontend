@@ -5,6 +5,7 @@ import { getDateString } from 'utils/datetime.utils';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { SITE_PAGES } from 'constants/pages.const';
+import { getAddressString } from 'utils/format.utils';
 
 interface Props {
   customer: ICustomerInfo;
@@ -25,7 +26,7 @@ export default function ReviewInfo(props: Props): JSX.Element {
     <div className="h-[500px] w-[400px] flex flex-col items-center justify-evenly p-8 rounded-xl shadow-lg">
       <div className="font-bold text-xl uppercase">{props.room.title}</div>
       <div className="lowercase italic text-center">
-        {props.room.max_guest} guest(s)
+        {getAddressString(props.room.address)}
       </div>
       <div className="flex justify-evenly w-full">
         <strong>Customer: </strong> {props.customer.customer_name}

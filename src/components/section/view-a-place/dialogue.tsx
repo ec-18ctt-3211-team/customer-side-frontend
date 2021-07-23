@@ -23,6 +23,7 @@ export default function Dialogue(props: Props): JSX.Element {
   const bookedDate = props.roomDetails.bookingDates?.map((date) =>
     formatDateString(date.date).getTime(),
   );
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const start = dayStart.getTime();
@@ -44,12 +45,14 @@ export default function Dialogue(props: Props): JSX.Element {
             value={dayStart}
             format="dd/MM/yyyy"
             min={today}
-            onChange={(date: any) => {
-              if (bookedDate?.includes(date.value.getTime())) {
-                alert('This date is booked');
+            onChange={(data: any) => {
+              const date: Date = data.value;
+              date.setHours(0, 0, 0, 0);
+              if (bookedDate?.includes(date.getTime())) {
+                alert('booked');
                 return;
               }
-              setStart(date.value);
+              setStart(date);
             }}
           />
         </div>
@@ -73,7 +76,10 @@ export default function Dialogue(props: Props): JSX.Element {
           setTotalKids={setTotalKids}
         />
       </div>
-      <Link to={SITE_PAGES.CONFIRM_BOOKING.path} className="w-2/3 h-1/5">
+      <Link
+        to={SITE_PAGES.CONFIRM_BOOKING.path + `/${props.roomDetails._id}`}
+        className="w-2/3 h-1/5"
+      >
         <Button>Book now</Button>
       </Link>
     </div>
