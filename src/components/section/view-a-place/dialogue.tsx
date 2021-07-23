@@ -1,11 +1,13 @@
 import { SITE_PAGES } from 'constants/pages.const';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { Link } from 'react-router-dom';
 import { Button, InputGuests } from 'components/common';
+import { IRoomDetail } from 'interfaces/room.interface';
+import { formatDateString } from 'utils/datetime.utils';
 
 interface Props {
-  price: number;
+  roomDetails: IRoomDetail;
 }
 
 const today = new Date();
@@ -13,17 +15,23 @@ const tomorrow = new Date();
 tomorrow.setDate(today.getDate() + 1);
 
 export default function Dialogue(props: Props): JSX.Element {
-  const [total, setTotal] = useState(props.price);
+  const [total, setTotal] = useState(props.roomDetails.normal_price);
   const [dayStart, setStart] = useState<Date>(today);
   const [dayEnd, setEnd] = useState<Date>(tomorrow);
   const [totalAdults, setTotalAdults] = useState<number>(1);
   const [totalKids, setTotalKids] = useState<number>(0);
+  const bookedDate = props.roomDetails.bookingDates?.map((date) =>
+    formatDateString(date.date).getTime(),
+  );
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const start = dayStart.getTime();
     const end = dayEnd.getTime();
     if (end - start < 0) return;
-    setTotal(props.price * Math.round((end - start) / 86400000));
+    setTotal(
+      props.roomDetails.normal_price * Math.round((end - start) / 86400000),
+    );
   }, [dayStart, dayEnd]);
 
   return (
@@ -37,7 +45,15 @@ export default function Dialogue(props: Props): JSX.Element {
             value={dayStart}
             format="dd/MM/yyyy"
             min={today}
-            onChange={(date: any) => setStart(date.value)}
+            onChange={(data: any) => {
+              const date: Date = data.value;
+              date.setHours(0, 0, 0, 0);
+              if (bookedDate?.includes(date.getTime())) {
+                alert('booked');
+                return;
+              }
+              setStart(date);
+            }}
           />
         </div>
         <div>to:</div>
@@ -60,7 +76,10 @@ export default function Dialogue(props: Props): JSX.Element {
           setTotalKids={setTotalKids}
         />
       </div>
-      <Link to={SITE_PAGES.CONFIRM_BOOKING.path} className="w-2/3 h-1/5">
+      <Link
+        to={SITE_PAGES.CONFIRM_BOOKING.path + `/${props.roomDetails._id}`}
+        className="w-2/3 h-1/5"
+      >
         <Button>Book now</Button>
       </Link>
     </div>

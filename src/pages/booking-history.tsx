@@ -4,7 +4,6 @@ import {
   BriefInfo,
   CustomerInfo,
 } from 'components/section/booking-history';
-import { ROOMS_DATA } from 'constants/rooms-data.const';
 import { ICustomerInfo, IBookingInfo } from 'interfaces/booking.interface';
 
 interface Props {
@@ -41,11 +40,11 @@ export default function BookingHistory(props: Props): JSX.Element {
         </div>
 
         {/* confirm data */}
-        <BriefInfo
+        {/* <BriefInfo
           bookingDetail={bookingDetail}
           customer={customerInfo}
           room={ROOMS_DATA[0]}
-        />
+        /> */}
       </div>
     </Layout>
   );

@@ -13,10 +13,10 @@ export default function BriefInfo(props: Props): JSX.Element {
   return (
     <div className="h-[500px] w-[400px] flex flex-col items-center justify-evenly p-8 rounded-xl shadow-lg">
       <div className="font-bold text-xl uppercase text-brown-400">
-        {props.room.room_name}
+        {props.room.title}
       </div>
-      <div className="lowercase italic">
-        {props.room.room_type} - {props.room.total_bedrooms} bedrooms
+      <div className="lowercase italic text-center">
+        {props.room.max_guest} guest(s)
       </div>
       <div className="flex justify-evenly w-full">
         <strong>Customer: </strong> {props.customer.customer_name}
