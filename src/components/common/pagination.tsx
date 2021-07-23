@@ -73,10 +73,6 @@ export const Pagination = (props: Props): JSX.Element => {
   useEffect(() => {
     if (currentPage < minPage || currentPage > maxPage) return;
     setBase(Math.trunc(currentPage / LIMIT));
-    console.log(
-      Math.trunc((maxPage - 1) / LIMIT),
-      Math.trunc(currentPage / LIMIT),
-    );
   }, [currentPage]);
 
   return (

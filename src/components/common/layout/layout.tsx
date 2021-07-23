@@ -18,7 +18,9 @@ export default function Layout(props: Props): JSX.Element {
         allowSearch={props.allowSearch}
       />
       <div className="p-8">{props.children}</div>
-      <Footer />
+      <div className="mt-auto">
+        <Footer />
+      </div>
     </div>
   );
 }
