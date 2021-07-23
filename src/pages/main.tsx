@@ -13,7 +13,10 @@ export default function Main(props: Props): JSX.Element {
       setAuthorized={props.setAuthorized}
       allowSearch
     >
-      <ImageTag data={{ src: '/images/welcome.jpg' }} width={100} />
+      <ImageTag
+        data={{ path: '/images/welcome.jpg', _id: 'welcome' }}
+        width={100}
+      />
       <DivPx size={32} />
       <div className="px-32 text-lg">Welcome to 3211,</div>
       {!props.isAuthorized && (

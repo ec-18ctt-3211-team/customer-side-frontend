@@ -5,7 +5,6 @@ import {
   CustomerInfo,
   ReviewInfo,
 } from 'components/section/confirm-booking';
-import { ROOMS_DATA } from 'constants/rooms-data.const';
 import { ICustomerInfo, IBookingInfo } from 'interfaces/booking.interface';
 
 interface Props {
@@ -52,11 +51,11 @@ export default function ConfirmBooking(props: Props): JSX.Element {
         </div>
 
         {/* confirm data */}
-        <ReviewInfo
+        {/* <ReviewInfo
           bookingDetail={bookingDetail}
           customer={customerInfo}
           room={ROOMS_DATA[0]}
-        />
+        /> */}
       </div>
     </Layout>
   );

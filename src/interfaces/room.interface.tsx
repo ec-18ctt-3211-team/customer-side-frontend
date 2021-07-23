@@ -1,12 +1,48 @@
 import { IImageTag } from './image-tag.interface';
 
-export interface IRoomDetail {
-  room_name: string;
-  host: string;
-  room_type: string;
-  total_bedrooms: number;
+export interface IRoomAddress {
+  number: string;
+  street: string;
+  ward: string;
+  district: string;
+  city: string;
+}
+
+export interface IBookingDate {
+  date: string;
+  room_id: string;
+  __id: string;
+  _v: number;
+}
+
+export interface ISpecialPrice {
+  date: string;
   price: number;
-  imageSrc: IImageTag[];
+  room_id: string;
+  __v: number;
+  _id: string;
+}
+
+export interface IRoomDetail {
+  _id: string;
+  title: string;
+  thumnail: string;
+  photos?: IImageTag[];
+  max_guest: number;
+  host_id: string;
+  address: IRoomAddress;
   description: string;
-  path?: string;
+  normal_price: number;
+  weekend_price: number;
+  extraPrices?: ISpecialPrice[];
+  bookingDates?: IBookingDate[];
+  created_at: string;
+  deleted_at: null;
+  __v: number;
+}
+
+export interface IResponse {
+  valid: boolean;
+  rooms: IRoomDetail[];
+  total: number;
 }

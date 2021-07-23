@@ -13,19 +13,19 @@ interface Props {
 }
 
 export default function ReviewInfo(props: Props): JSX.Element {
-  const [price, setPrice] = useState(props.room.price);
+  const [price, setPrice] = useState(props.room.normal_price);
   useEffect(() => {
     const start = props.bookingDetail.fromDate.getTime();
     const end = props.bookingDetail.toDate.getTime();
     if (end - start < 0) return;
-    setPrice(props.room.price * Math.round((end - start) / 86400000));
+    setPrice(props.room.normal_price * Math.round((end - start) / 86400000));
   }, [props.bookingDetail, props.room]);
 
   return (
     <div className="h-[500px] w-[400px] flex flex-col items-center justify-evenly p-8 rounded-xl shadow-lg">
-      <div className="font-bold text-xl uppercase">{props.room.room_name}</div>
-      <div className="lowercase italic">
-        {props.room.room_type} - {props.room.total_bedrooms} bedrooms
+      <div className="font-bold text-xl uppercase">{props.room.title}</div>
+      <div className="lowercase italic text-center">
+        {props.room.max_guest} guest(s)
       </div>
       <div className="flex justify-evenly w-full">
         <strong>Customer: </strong> {props.customer.customer_name}

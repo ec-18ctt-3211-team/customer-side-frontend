@@ -1,5 +1,8 @@
 export interface IImageTag {
-  name?: string;
-  src: string;
+  _id: string;
+  title?: string;
+  room_id?: string;
+  path: string;
   href?: string;
+  _v?: number;
 }
