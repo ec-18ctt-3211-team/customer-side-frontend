@@ -3,7 +3,8 @@ export interface IUserInfo {
   username: string;
   phone_number: string;
   email: string;
-  new_password?: string;
+  password?: string;
+  ava?: string;
 }
 
 export interface IStatus {

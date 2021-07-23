@@ -4,5 +4,8 @@ export const ENDPOINT_URL = {
       `/rooms?city=${city}&limit=${itemsPerPage}&page=${pageNumber}`,
     getRoomsByID: (id: string) => `/rooms/${id}`,
   },
-  POST: {},
+  POST: {
+    register: '/auth/register',
+    login: '/auth/login',
+  },
 };
