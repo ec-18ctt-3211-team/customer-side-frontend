@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Pagination } from 'components/common';
-import { IBookingTable } from 'interfaces/user.interface';
+import { IBookingTable } from 'interfaces/booking.interface';
 import { Link } from 'react-router-dom';
 import { SITE_PAGES } from 'constants/pages.const';
 

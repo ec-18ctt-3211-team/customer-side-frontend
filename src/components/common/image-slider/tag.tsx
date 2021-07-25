@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { IImageTag } from 'interfaces/image-tag.interface';
+import { IImage } from 'interfaces/image.interface';
 
 interface Props {
-  data: IImageTag;
+  data: IImage;
   width: number;
 }
 

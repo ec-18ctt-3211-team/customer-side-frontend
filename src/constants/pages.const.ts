@@ -9,7 +9,7 @@ export const SITE_PAGES = {
   },
   VIEW_A_PLACE: {
     label: 'view a place',
-    path: '/room_detail',
+    path: '/room_details',
   },
   ROOMS_OF_HOST: {
     label: 'rooms of host',
@@ -21,11 +21,11 @@ export const SITE_PAGES = {
   },
   BOOKING_HISTORY: {
     label: 'booking history',
-    path: '/booking_history',
+    path: '/booking_details',
   },
   USER_PROFILE: {
     label: 'user profile',
-    path: '/user_profile',
+    path: '/profile',
   },
   SUCCESS_BOOKING: {
     label: 'success booking',

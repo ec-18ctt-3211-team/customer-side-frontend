@@ -1,4 +1,4 @@
-import { Layout, ImageSlider, DivPx, Popup } from 'components/common';
+import { Layout, ImageSlider, DivPx, Popup, Loading } from 'components/common';
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { RoomDetail, Dialogue } from 'components/section/view-a-place';
@@ -7,12 +7,7 @@ import { ENDPOINT_URL } from 'constants/api.const';
 import { IRoomDetail } from 'interfaces/room.interface';
 import { IHostDetail } from 'interfaces/host.interface';
 
-interface Props {
-  isAuthorized: boolean;
-  setAuthorized: (isAuthorized: boolean) => void;
-}
-
-export default function ViewAPlace(props: Props): JSX.Element {
+export default function ViewAPlace(): JSX.Element {
   const location = useLocation();
   const [roomDetails, setRoomDetails] = useState<IRoomDetail>();
   const [hostDetails, setHostDetails] = useState<IHostDetail>();
@@ -33,11 +28,7 @@ export default function ViewAPlace(props: Props): JSX.Element {
   }, []);
 
   return (
-    <Layout
-      isAuthorized={props.isAuthorized}
-      setAuthorized={props.setAuthorized}
-      allowSearch
-    >
+    <Layout allowSearch>
       {roomDetails && roomDetails.photos && hostDetails ? (
         <div>
           {roomDetails.photos.length > 0 && (
@@ -59,7 +50,7 @@ export default function ViewAPlace(props: Props): JSX.Element {
           </div>
         </div>
       ) : (
-        <Popup>Loading...</Popup>
+        <Loading />
       )}
     </Layout>
   );

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { ImageTag } from 'components/common';
-import { IImageTag } from 'interfaces/image-tag.interface';
+import { IImage } from 'interfaces/image.interface';
 import { Icon, leftSmallOutline } from 'utils/icon.utils';
 
 interface Props {
   title?: string;
   limit: number;
-  images: IImageTag[];
+  images: IImage[];
   isLink?: boolean;
 }
 

@@ -10,6 +10,7 @@ import { Pagination, PaginationItem } from './pagination';
 import SelectOption from './options';
 import Form from './inputForm';
 import Popup from './popup';
+import Loading from './loading';
 
 export type borderType = 'full' | 'line';
 export type inputType = 'text' | 'password';
@@ -30,4 +31,5 @@ export {
   SelectOption,
   Form,
   Popup,
+  Loading,
 };

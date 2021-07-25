@@ -1,64 +1,42 @@
 import { Link, useHistory } from 'react-router-dom';
-import { Searchbar, DivPx, Form, Popup } from '..';
+import { Searchbar, DivPx, Loading } from '..';
 import { SITE_PAGES } from 'constants/pages.const';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IUserInfo } from 'interfaces/user.interface';
 import { Icon, logoutOutline } from 'utils/icon.utils';
-import { BASE, POST } from 'utils/fetcher.utils';
-import { ENDPOINT_URL } from 'constants/api.const';
+import Signup from './signup';
+import Login from './login';
 
 interface Props {
-  isAuthorized: boolean;
-  setAuthorized: (isAuthorized: boolean) => void;
   allowSearch?: boolean;
 }
 
+export type NavbarStatus = 'login' | 'signup' | 'loading';
+
+const DefaultInfo = {
+  userID: '',
+  username: '',
+  phone_number: '',
+  email: '',
+  password: '',
+};
+
 export default function Navbar(props: Props): JSX.Element {
+  const [isAuthorized, setAuthorized] = useState(checkAuthorized());
   const history = useHistory();
-  const [userInfo, setUserInfo] = useState<IUserInfo>({
-    userID: '',
-    username: '',
-    phone_number: '',
-    email: '',
-    password: '',
-  });
-  const [isShow, setShow] = useState<'login' | 'signup' | 'loading' | null>(
-    null,
-  );
+  const [userInfo, setUserInfo] = useState<IUserInfo>(DefaultInfo);
+  const [isShow, setShow] = useState<NavbarStatus | null>(null);
 
-  async function signup() {
-    if (!userInfo.password) return;
-    const payload = {
-      email: userInfo.email,
-      name: userInfo.username,
-      password: userInfo.password,
-      phone: userInfo.phone_number,
-    };
-    setShow('loading');
-    const response = await POST(ENDPOINT_URL.POST.register, payload);
-    if (response.data.valid) setShow('login');
-    else alert(response.data.message);
+  function checkAuthorized() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      return true;
+    } else return false;
   }
 
-  async function login() {
-    if (!userInfo.password) return;
-    const payload = {
-      email: userInfo.email,
-      password: userInfo.password,
-    };
-    setShow('loading');
-    const response = await POST(ENDPOINT_URL.POST.login, payload);
-    if (response.data.valid) {
-      props.setAuthorized(true);
-      setUserInfo({
-        ...userInfo,
-        userID: response.data.userID,
-        username: response.data.name,
-        ava: BASE + response.data.ava,
-      });
-    } else alert(response.data.message);
-    setShow(null);
-  }
+  useEffect(() => {
+    setAuthorized(checkAuthorized());
+  }, [localStorage]);
 
   return (
     <div>
@@ -71,7 +49,7 @@ export default function Navbar(props: Props): JSX.Element {
         <div className="py-2 sm:ml-auto flex flex-row-reverse sm:flex-row justify-center cursor-pointer items-center">
           <span className="px-4 hover:text-brown-600">Host</span>
           <DivPx size={8} />
-          {!props.isAuthorized ? (
+          {!isAuthorized ? (
             <div className="flex">
               <span className="px-4" onClick={() => setShow('signup')}>
                 Sign up
@@ -104,7 +82,7 @@ export default function Navbar(props: Props): JSX.Element {
               <span
                 className="px-4"
                 onClick={() => {
-                  props.setAuthorized(false);
+                  setAuthorized(false);
                   history.push(SITE_PAGES.MAIN.path);
                 }}
               >
@@ -115,39 +93,20 @@ export default function Navbar(props: Props): JSX.Element {
         </div>
       </div>
       {isShow === 'signup' && (
-        <Popup>
-          <div className="w-[350px] h-[450px] relative">
-            <Form
-              title="sign up"
-              type="signup"
-              userInfo={userInfo}
-              setUserInfo={setUserInfo}
-              button={{
-                label: 'Sign up',
-                onClick: signup,
-              }}
-            />
-          </div>
-        </Popup>
+        <Signup
+          userInfo={userInfo}
+          setUserInfo={setUserInfo}
+          setShow={setShow}
+        />
       )}
       {isShow === 'login' && (
-        <Popup>
-          <div className="w-[350px] h-[350px] relative">
-            <Form
-              title="login"
-              type="login"
-              userInfo={userInfo}
-              setUserInfo={setUserInfo}
-              button={{
-                label: 'login',
-                onClick: login,
-              }}
-              create_an_account={() => setShow('signup')}
-            />
-          </div>
-        </Popup>
+        <Login
+          userInfo={userInfo}
+          setUserInfo={setUserInfo}
+          setShow={setShow}
+        />
       )}
-      {isShow === 'loading' && <Popup>loading...</Popup>}
+      {isShow === 'loading' && <Loading />}
     </div>
   );
 }

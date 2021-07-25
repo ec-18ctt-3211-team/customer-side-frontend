@@ -1,7 +1,7 @@
-import { IImageTag } from 'interfaces/image-tag.interface';
+import { IImage } from 'interfaces/image.interface';
 import { SITE_PAGES } from './pages.const';
 
-export const IMAGES: IImageTag[] = [
+export const IMAGES: IImage[] = [
   {
     _id: 'Ho_Chi_Minh',
     title: 'Ho Chi Minh city',
@@ -46,7 +46,7 @@ export const IMAGES: IImageTag[] = [
   },
 ];
 
-export const GIFTS: IImageTag[] = [
+export const GIFTS: IImage[] = [
   { _id: 'gift1', path: '/images/gifts/gift1.jpg' },
   { _id: 'gift2', path: '/images/gifts/gift2.jpg' },
   { _id: 'gift3', path: '/images/gifts/gift3.jpg' },
@@ -54,7 +54,7 @@ export const GIFTS: IImageTag[] = [
   { _id: 'gift5', path: '/images/gifts/gift5.jpg' },
 ];
 
-export const ROOMS: IImageTag[] = [
+export const ROOMS: IImage[] = [
   { _id: 'homestay1', path: '/images/homestays/homestay1.jpg' },
   { _id: 'homestay2', path: '/images/homestays/homestay2.jpg' },
   { _id: 'homestay3', path: '/images/homestays/homestay3.jpg' },
