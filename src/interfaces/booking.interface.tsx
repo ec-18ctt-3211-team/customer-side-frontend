@@ -1,9 +1,11 @@
+export type PaymentType = 'paypal' | 'cash';
+
 export interface IBookingInfo {
   totalAdults: number;
   totalKids: number;
   fromDate: Date;
   toDate: Date;
-  payment_method: string;
+  payment_method: PaymentType;
 }
 
 export interface IStatus {

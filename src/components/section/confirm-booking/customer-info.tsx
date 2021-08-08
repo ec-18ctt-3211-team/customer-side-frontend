@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { DivPx, Input, SelectOption } from 'components/common';
-import { IBookingInfo } from 'interfaces/booking.interface';
+import { IBookingInfo, PaymentType } from 'interfaces/booking.interface';
 import { IUserInfo } from 'interfaces/user.interface';
 
 interface Props {
@@ -69,9 +69,9 @@ export default function CustomerInfo(props: Props): JSX.Element {
         <DivPx size={28} />
         <SelectOption
           label="payment method"
-          options={['paypal', 'momo', 'cash']}
+          options={['paypal', 'cash']}
           currentOptions={currentOption}
-          setCurrentOptions={setCurrentOption}
+          setCurrentOptions={(value) => setCurrentOption(value as PaymentType)}
         />
       </div>
     </div>
