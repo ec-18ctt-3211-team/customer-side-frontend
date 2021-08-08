@@ -6,6 +6,7 @@ import Main from 'pages/main';
 import BookingHistory from 'pages/booking-history';
 import UserProfile from './user-profile';
 import SuccessBooking from './success-booking';
+import Error from './error';
 
 const Pages = {
   Viewaplace,
@@ -16,6 +17,7 @@ const Pages = {
   BookingHistory,
   UserProfile,
   SuccessBooking,
+  Error,
 };
 
 export default Pages;

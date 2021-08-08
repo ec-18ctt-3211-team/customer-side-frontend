@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { DivPx, InputGuests } from 'components/common';
-import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
-import { IBookingInfo } from 'interfaces/booking.interface';
+import DatePicker from 'react-datepicker';
+import { defaultBooking, IBookingInfo } from 'interfaces/booking.interface';
+import { IRoomDetail } from 'interfaces/room.interface';
+import { formatDateString } from 'utils/datetime.utils';
 
 interface Props {
   bookingDetail: IBookingInfo;
   setBookingDetail: (detail: IBookingInfo) => void;
+  roomDetails: IRoomDetail;
 }
 
 export default function BookingInfo(props: Props): JSX.Element {
@@ -17,14 +20,12 @@ export default function BookingInfo(props: Props): JSX.Element {
   );
   const [dayStart, setStart] = useState<Date>(props.bookingDetail.fromDate);
   const [dayEnd, setEnd] = useState<Date>(props.bookingDetail.toDate);
+  const bookedDate = props.roomDetails.bookingDates?.map((date) =>
+    formatDateString(date.date),
+  );
 
   useEffect(() => {
-    props.setBookingDetail({
-      totalAdults: totalAdults,
-      totalKids: totalKids,
-      fromDate: dayStart,
-      toDate: dayEnd,
-    });
+    props.setBookingDetail(defaultBooking);
   }, [totalAdults, totalKids, dayStart, dayEnd]);
 
   return (
@@ -39,26 +40,24 @@ export default function BookingInfo(props: Props): JSX.Element {
       />
       <DivPx size={28} />
       <div className="flex h-1/5 w-full justify-between items-center">
-        <div>from:</div>
-        <div className="w-1/3">
-          <DatePickerComponent
-            placeholder="Enter start date"
-            value={dayStart}
-            format="dd/MM/yyyy"
-            min={new Date()}
-            onChange={(date: any) => setStart(date.value)}
-          />
-        </div>
-        <div>to:</div>
-        <div className="w-1/3">
-          <DatePickerComponent
-            placeholder="Enter end date"
-            value={dayEnd}
-            format="dd/MM/yyyy"
-            min={dayStart}
-            onChange={(date: any) => setEnd(date.value)}
-          />
-        </div>
+        <div className="pr-2">from:</div>
+        <DatePicker
+          placeholderText="Enter start date"
+          selected={dayStart}
+          dateFormat="dd/MM/yyyy"
+          minDate={new Date()}
+          excludeDates={bookedDate ?? []}
+          onChange={(date: Date) => setStart(date)}
+        />
+        <div className="pr-2">to:</div>
+        <DatePicker
+          placeholderText="Enter end date"
+          selected={dayEnd}
+          dateFormat="dd/MM/yyyy"
+          minDate={dayStart}
+          excludeDates={bookedDate ?? []}
+          onChange={(date: Date) => setEnd(date)}
+        />
       </div>
     </div>
   );

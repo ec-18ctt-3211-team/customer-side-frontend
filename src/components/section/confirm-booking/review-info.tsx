@@ -1,5 +1,6 @@
 import { Button } from 'components/common';
-import { ICustomerInfo, IBookingInfo } from 'interfaces/booking.interface';
+import { IBookingInfo } from 'interfaces/booking.interface';
+import { IUserInfo } from 'interfaces/user.interface';
 import { IRoomDetail } from 'interfaces/room.interface';
 import { getDateString } from 'utils/datetime.utils';
 import { useState, useEffect } from 'react';
@@ -8,7 +9,7 @@ import { SITE_PAGES } from 'constants/pages.const';
 import { getAddressString } from 'utils/format.utils';
 
 interface Props {
-  customer: ICustomerInfo;
+  customer: IUserInfo;
   bookingDetail: IBookingInfo;
   room: IRoomDetail;
 }
@@ -29,7 +30,7 @@ export default function ReviewInfo(props: Props): JSX.Element {
         {getAddressString(props.room.address)}
       </div>
       <div className="flex justify-evenly w-full">
-        <strong>Customer: </strong> {props.customer.customer_name}
+        <strong>Customer: </strong> {props.customer.username}
       </div>
       <div className="flex justify-between w-full">
         <div>
@@ -51,7 +52,7 @@ export default function ReviewInfo(props: Props): JSX.Element {
       </div>
       <div className="flex justify-evenly w-full">
         <strong>Payment method:</strong>
-        <div className="uppercase">{props.customer.payment_method}</div>
+        <div className="uppercase">{props.bookingDetail.payment_method}</div>
       </div>
       <Link to={SITE_PAGES.SUCCESS_BOOKING.path} className="w-2/3 h-12">
         <Button>Confirm</Button>

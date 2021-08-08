@@ -1,51 +1,52 @@
-import { Layout } from 'components/common';
+import { useState, useEffect } from 'react';
+import { Layout, Loading } from 'components/common';
 import {
   BookingInfo,
   BriefInfo,
   CustomerInfo,
 } from 'components/section/booking-history';
-import { ICustomerInfo, IBookingInfo } from 'interfaces/booking.interface';
+import { defaultBooking, IBookingInfo } from 'interfaces/booking.interface';
+import { IUserInfo, defaultCustomer } from 'interfaces/user.interface';
+import { IRoomDetail } from 'interfaces/room.interface';
 
-interface Props {
-  isAuthorized: boolean;
-  setAuthorized: (isAuthorized: boolean) => void;
-}
+export default function BookingHistory(): JSX.Element {
+  const [bookingDetail, setBookingDetail] = useState<IBookingInfo>();
+  const [customerInfo, setCustomerInfo] = useState<IUserInfo>();
+  const [room, setRoom] = useState<IRoomDetail>();
 
-export default function BookingHistory(props: Props): JSX.Element {
-  const bookingDetail: IBookingInfo = {
-    totalAdults: 0,
-    totalKids: 0,
-    fromDate: new Date(),
-    toDate: new Date(),
-  };
-  const customerInfo: ICustomerInfo = {
-    customer_name: 'ly ngoc nhi',
-    phone_number: '0123456789',
-    email: '123@gmail.com',
-    payment_method: 'paypal',
-  };
+  function getBookingHistory() {
+    setBookingDetail(defaultBooking);
+    setCustomerInfo(defaultCustomer);
+    // setRoom()
+  }
+
+  useEffect(() => getBookingHistory(), []);
 
   return (
-    <Layout
-      isAuthorized={props.isAuthorized}
-      setAuthorized={props.setAuthorized}
-    >
-      <div className="flex justify-between w-full">
-        {/* edit data */}
-        <div className="w-1/3 flex flex-col">
-          <BookingInfo bookingDetail={bookingDetail} />
-          <div className="mt-auto">
-            <CustomerInfo customerInfo={customerInfo} />
+    <Layout>
+      {bookingDetail && customerInfo && room ? (
+        <div className="flex justify-between w-full">
+          {/* edit data */}
+          <div className="w-1/3 flex flex-col">
+            <BookingInfo bookingDetail={bookingDetail} />
+            <div className="mt-auto">
+              <CustomerInfo
+                customerInfo={customerInfo}
+                bookingInfo={bookingDetail}
+              />
+            </div>
           </div>
-        </div>
 
-        {/* confirm data */}
-        {/* <BriefInfo
-          bookingDetail={bookingDetail}
-          customer={customerInfo}
-          room={ROOMS_DATA[0]}
-        /> */}
-      </div>
+          {/* confirm data */}
+          <BriefInfo
+            customerInfo={customerInfo}
+            bookingDetail={bookingDetail}
+            room={room}
+          />
+        </div>
+      ) : (
+        <Loading />
+      )}
     </Layout>
   );
 }

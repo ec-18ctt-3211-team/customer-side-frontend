@@ -1,39 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Layout, Popup } from 'components/common';
+import { Layout, Loading } from 'components/common';
 import {
   BookingInfo,
   CustomerInfo,
   ReviewInfo,
 } from 'components/section/confirm-booking';
-import { ICustomerInfo, IBookingInfo } from 'interfaces/booking.interface';
+import { IBookingInfo, defaultBooking } from 'interfaces/booking.interface';
+import { IUserInfo, defaultCustomer } from 'interfaces/user.interface';
 import { GET } from 'utils/fetcher.utils';
 import { ENDPOINT_URL } from 'constants/api.const';
 import { IRoomDetail } from 'interfaces/room.interface';
+import { formatDateString, getDateString } from 'utils/datetime.utils';
 
-interface Props {
-  isAuthorized: boolean;
-  setAuthorized: (isAuthorized: boolean) => void;
-}
-
-const today = new Date();
-const tomorrow = new Date();
-tomorrow.setDate(today.getDate() + 1);
-
-export default function ConfirmBooking(props: Props): JSX.Element {
-  const [bookingDetail, setBookingDetail] = useState<IBookingInfo>({
-    totalAdults: 0,
-    totalKids: 0,
-    fromDate: today,
-    toDate: tomorrow,
-  });
-  const [customerInfo, setCustomerInfo] = useState<ICustomerInfo>({
-    customer_name: 'nhily',
-    phone_number: '0123456789',
-    email: '123@gmail.com',
-    payment_method: 'paypal',
-  });
+export default function ConfirmBooking(): JSX.Element {
   const location = useLocation();
+  const [bookingDetail, setBookingDetail] = useState<IBookingInfo>(
+    getBookingDetails(),
+  );
+  const [customerInfo, setCustomerInfo] = useState<IUserInfo>(defaultCustomer);
   const [roomDetails, setRoomDetails] = useState<IRoomDetail>();
 
   async function fetchRoom() {
@@ -43,15 +28,35 @@ export default function ConfirmBooking(props: Props): JSX.Element {
     setRoomDetails(response.data.room);
   }
 
+  function fetchUser() {
+    const userID = localStorage.getItem('userID');
+    if (!userID) return;
+    //fetch user info
+  }
+
+  function getBookingDetails(): IBookingInfo {
+    // const details = localStorage.getItem('bookingDetails');
+    // if (!details) return defaultBooking;
+    // try {
+    //   const bookingInfo = JSON.parse(details);
+    //   return {
+    //     ...bookingInfo,
+    //     toDate: formatDateString(bookingInfo.toDate),
+    //     fromDate: formatDateString(bookingInfo.fromDate),
+    //   };
+    // } catch (error) {
+    //   return defaultBooking;
+    // }
+    return defaultBooking;
+  }
+
   useEffect(() => {
+    fetchUser();
     fetchRoom();
   }, []);
 
   return (
-    <Layout
-      isAuthorized={props.isAuthorized}
-      setAuthorized={props.setAuthorized}
-    >
+    <Layout>
       {roomDetails ? (
         <div className="flex justify-between w-full">
           {/* edit data */}
@@ -59,11 +64,14 @@ export default function ConfirmBooking(props: Props): JSX.Element {
             <BookingInfo
               bookingDetail={bookingDetail}
               setBookingDetail={setBookingDetail}
+              roomDetails={roomDetails}
             />
             <div className="mt-auto pt-12">
               <CustomerInfo
                 customerInfo={customerInfo}
                 setCustomerInfo={setCustomerInfo}
+                bookingInfo={bookingDetail}
+                setBookingInfo={setBookingDetail}
               />
             </div>
           </div>
@@ -76,7 +84,7 @@ export default function ConfirmBooking(props: Props): JSX.Element {
           />
         </div>
       ) : (
-        <Popup>Loading...</Popup>
+        <Loading />
       )}
     </Layout>
   );

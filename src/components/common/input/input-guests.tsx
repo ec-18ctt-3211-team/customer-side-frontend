@@ -10,8 +10,8 @@ interface Props {
 export default function InputGuests(props: Props): JSX.Element {
   const { totalAdults, setTotalAdults, totalKids, setTotalKids } = props;
   return (
-    <div className="flex w-full justify-around">
-      <div className="flex w-2/5 justify-around">
+    <div className="flex flex-wrap w-full justify-around">
+      <div className="flex md:w-2/5 justify-around">
         <div
           className={[
             'rounded-full bg-brown-200 text-brown-700',
@@ -32,7 +32,7 @@ export default function InputGuests(props: Props): JSX.Element {
           <Icon icon={addSmallOutline} />
         </div>
       </div>
-      <div className="flex w-2/5 justify-around">
+      <div className="flex md:w-2/5 justify-around">
         <div
           className={[
             'rounded-full bg-brown-200 text-brown-700',

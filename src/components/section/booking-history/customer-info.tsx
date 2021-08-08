@@ -1,7 +1,9 @@
-import { ICustomerInfo } from 'interfaces/booking.interface';
+import { IBookingInfo } from 'interfaces/booking.interface';
+import { IUserInfo } from 'interfaces/user.interface';
 
 interface Props {
-  customerInfo: ICustomerInfo;
+  customerInfo: IUserInfo;
+  bookingInfo: IBookingInfo;
 }
 
 export default function CustomerInfo(props: Props): JSX.Element {
@@ -13,7 +15,7 @@ export default function CustomerInfo(props: Props): JSX.Element {
       <div className="p-4 flex">
         <div className="pb-2 w-full">Customer name: </div>
         <div className="border-b-2 w-full text-right">
-          {props.customerInfo.customer_name}
+          {props.customerInfo.username}
         </div>
       </div>
       <div className="p-4 flex">
@@ -31,7 +33,7 @@ export default function CustomerInfo(props: Props): JSX.Element {
       <div className="p-4 flex">
         <div className="pb-2 w-full">Payment Method: </div>
         <div className="border-b-2 w-full text-right">
-          {props.customerInfo.payment_method}
+          {props.bookingInfo.payment_method}
         </div>
       </div>
     </div>

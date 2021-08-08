@@ -7,13 +7,9 @@ export interface IUserInfo {
   ava?: string;
 }
 
-export interface IStatus {
-  label: string;
-  color: string;
-}
-
-export interface IBookingTable {
-  orderID: string;
-  roomID: string;
-  order_status: IStatus;
-}
+export const defaultCustomer: IUserInfo = {
+  userID: '',
+  username: '',
+  phone_number: '',
+  email: '',
+};

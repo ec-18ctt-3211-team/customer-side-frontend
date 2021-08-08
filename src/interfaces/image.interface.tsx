@@ -1,4 +1,4 @@
-export interface IImageTag {
+export interface IImage {
   _id: string;
   title?: string;
   room_id?: string;

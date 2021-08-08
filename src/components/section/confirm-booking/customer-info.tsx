@@ -1,20 +1,23 @@
 import { useState, useEffect } from 'react';
 import { DivPx, Input, SelectOption } from 'components/common';
-import { ICustomerInfo } from 'interfaces/booking.interface';
+import { IBookingInfo } from 'interfaces/booking.interface';
+import { IUserInfo } from 'interfaces/user.interface';
 
 interface Props {
-  customerInfo: ICustomerInfo;
-  setCustomerInfo: (detail: ICustomerInfo) => void;
+  customerInfo: IUserInfo;
+  setCustomerInfo: (detail: IUserInfo) => void;
+  bookingInfo: IBookingInfo;
+  setBookingInfo: (detail: IBookingInfo) => void;
 }
 
 export default function CustomerInfo(props: Props): JSX.Element {
   const [currentOption, setCurrentOption] = useState(
-    props.customerInfo.payment_method,
+    props.bookingInfo.payment_method,
   );
 
   useEffect(() => {
-    props.setCustomerInfo({
-      ...props.customerInfo,
+    props.setBookingInfo({
+      ...props.bookingInfo,
       payment_method: currentOption,
     });
   }, [currentOption]);
@@ -26,12 +29,12 @@ export default function CustomerInfo(props: Props): JSX.Element {
         <Input
           border="line"
           type="text"
-          value={props.customerInfo.customer_name}
+          value={props.customerInfo.username}
           label={{ value: 'customer name', position: 'top' }}
           onChange={(e) =>
             props.setCustomerInfo({
               ...props.customerInfo,
-              customer_name: e.target.value,
+              username: e.target.value,
             })
           }
         />

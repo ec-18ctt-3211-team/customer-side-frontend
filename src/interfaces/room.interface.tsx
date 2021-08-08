@@ -1,4 +1,4 @@
-import { IImageTag } from './image-tag.interface';
+import { IImage } from './image.interface';
 
 export interface IRoomAddress {
   number: string;
@@ -27,7 +27,7 @@ export interface IRoomDetail {
   _id: string;
   title: string;
   thumnail: string;
-  photos?: IImageTag[];
+  photos?: IImage[];
   max_guest: number;
   host_id: string;
   address: IRoomAddress;
