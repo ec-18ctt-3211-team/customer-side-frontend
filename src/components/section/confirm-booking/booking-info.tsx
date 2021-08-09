@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { DivPx, InputGuests } from 'components/common';
 import DatePicker from 'react-datepicker';
-import { defaultBooking, IBookingInfo } from 'interfaces/booking.interface';
+import { IBookingInfo, PaymentType } from 'interfaces/booking.interface';
 import { IRoomDetail } from 'interfaces/room.interface';
 import { formatDateString } from 'utils/datetime.utils';
+import { useState, useEffect } from 'react';
+import { DivPx, InputGuests, SelectOption } from 'components/common';
 
 interface Props {
   bookingDetail: IBookingInfo;
@@ -12,51 +12,71 @@ interface Props {
 }
 
 export default function BookingInfo(props: Props): JSX.Element {
-  const [totalAdults, setTotalAdults] = useState<number>(
-    props.bookingDetail.totalAdults,
-  );
-  const [totalKids, setTotalKids] = useState<number>(
-    props.bookingDetail.totalKids,
-  );
-  const [dayStart, setStart] = useState<Date>(props.bookingDetail.fromDate);
-  const [dayEnd, setEnd] = useState<Date>(props.bookingDetail.toDate);
-  const bookedDate = props.roomDetails.bookingDates?.map((date) =>
-    formatDateString(date.date),
+  const [payment_method, setPaymentMethod] = useState<PaymentType>(
+    props.bookingDetail.payment_method,
   );
 
   useEffect(() => {
-    props.setBookingDetail(defaultBooking);
-  }, [totalAdults, totalKids, dayStart, dayEnd]);
+    props.setBookingDetail({
+      ...props.bookingDetail,
+      payment_method: payment_method,
+    });
+  }, [payment_method]);
 
   return (
     <div className="font-medium uppercase">
       <div className="font-bold py-3 text-lg">booking information</div>
       <div className="p-4">number of guests:</div>
       <InputGuests
-        totalAdults={totalAdults}
-        setTotalAdults={setTotalAdults}
-        totalKids={totalKids}
-        setTotalKids={setTotalKids}
+        totalAdults={props.bookingDetail.totalAdults}
+        setTotalAdults={(totalAdults) =>
+          props.setBookingDetail({ ...props.bookingDetail, totalAdults })
+        }
+        totalKids={props.bookingDetail.totalKids}
+        setTotalKids={(totalKids) =>
+          props.setBookingDetail({ ...props.bookingDetail, totalKids })
+        }
       />
       <DivPx size={28} />
-      <div className="flex h-1/5 w-full justify-between items-center">
+      <div className="flex h-1/5 w-full justify-between items-center px-4">
         <div className="pr-2">from:</div>
         <DatePicker
           placeholderText="Enter start date"
-          selected={dayStart}
+          selected={props.bookingDetail.fromDate}
           dateFormat="dd/MM/yyyy"
           minDate={new Date()}
-          excludeDates={bookedDate ?? []}
-          onChange={(date: Date) => setStart(date)}
+          excludeDates={
+            props.roomDetails.bookingDates?.map((date) =>
+              formatDateString(date.date),
+            ) ?? []
+          }
+          onChange={(fromDate: Date) =>
+            props.setBookingDetail({ ...props.bookingDetail, fromDate })
+          }
         />
         <div className="pr-2">to:</div>
         <DatePicker
           placeholderText="Enter end date"
-          selected={dayEnd}
+          selected={props.bookingDetail.toDate}
           dateFormat="dd/MM/yyyy"
-          minDate={dayStart}
-          excludeDates={bookedDate ?? []}
-          onChange={(date: Date) => setEnd(date)}
+          minDate={props.bookingDetail.fromDate}
+          excludeDates={
+            props.roomDetails.bookingDates?.map((date) =>
+              formatDateString(date.date),
+            ) ?? []
+          }
+          onChange={(toDate: Date) =>
+            props.setBookingDetail({ ...props.bookingDetail, toDate })
+          }
+        />
+      </div>
+      <DivPx size={28} />
+      <div className="w-2/3 pb-6 px-4">
+        <SelectOption<PaymentType>
+          label="payment method"
+          options={[{ value: 'paypal', label: 'Paypal' }]}
+          currentOptions={payment_method}
+          setCurrentOptions={(value) => setPaymentMethod(value)}
         />
       </div>
     </div>

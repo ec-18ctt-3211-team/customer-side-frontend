@@ -2,7 +2,7 @@ import { PayPalButton } from 'react-paypal-button-v2';
 
 interface Props {
   amount: number;
-  setSucceed: (succeed: boolean) => void;
+  createAnOrder: (payment_number: string) => void;
 }
 
 export default function PayPal(props: Props): JSX.Element {
@@ -12,9 +12,9 @@ export default function PayPal(props: Props): JSX.Element {
       currency="USD"
       shippingPreference="NO_SHIPPING"
       onSuccess={(details: any, data: any) => {
-        props.setSucceed(true);
-        console.log(details);
-        console.log(data);
+        props.createAnOrder(data.payerID);
+        console.log('details', details);
+        console.log('data', data);
       }}
     />
   );

@@ -5,9 +5,13 @@ import {
   BriefInfo,
   CustomerInfo,
 } from 'components/section/booking-history';
-import { defaultBooking, IBookingInfo } from 'interfaces/booking.interface';
+import { IBookingInfo } from 'interfaces/booking.interface';
 import { IUserInfo, defaultCustomer } from 'interfaces/user.interface';
 import { IRoomDetail } from 'interfaces/room.interface';
+
+const today = new Date();
+const tomorrow = new Date();
+tomorrow.setDate(today.getDate() + 1);
 
 export default function BookingHistory(): JSX.Element {
   const [bookingDetail, setBookingDetail] = useState<IBookingInfo>();
@@ -15,7 +19,13 @@ export default function BookingHistory(): JSX.Element {
   const [room, setRoom] = useState<IRoomDetail>();
 
   function getBookingHistory() {
-    setBookingDetail(defaultBooking);
+    setBookingDetail({
+      totalAdults: 1,
+      totalKids: 0,
+      fromDate: today,
+      toDate: tomorrow,
+      payment_method: 'paypal',
+    });
     setCustomerInfo(defaultCustomer);
     // setRoom()
   }

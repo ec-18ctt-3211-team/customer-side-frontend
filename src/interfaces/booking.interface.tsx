@@ -1,4 +1,4 @@
-export type PaymentType = 'paypal' | 'cash';
+export type PaymentType = 'paypal';
 
 export interface IBookingInfo {
   totalAdults: number;
@@ -19,14 +19,18 @@ export interface IBookingTable {
   order_status: IStatus;
 }
 
-const today = new Date();
-const tomorrow = new Date();
-tomorrow.setDate(today.getDate() + 1);
-
-export const defaultBooking: IBookingInfo = {
-  totalAdults: 0,
-  totalKids: 0,
-  fromDate: today,
-  toDate: tomorrow,
-  payment_method: 'paypal',
-};
+export interface ICreateOrder {
+  room_id: string;
+  host_id: string;
+  customer_name: string;
+  customer_phone: string;
+  email: string;
+  num_adult: number;
+  num_kid: number;
+  created_at: string;
+  day_start: string;
+  day_end: string;
+  status: string;
+  customer_id?: string;
+  payment_number?: string;
+}

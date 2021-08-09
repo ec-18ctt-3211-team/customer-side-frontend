@@ -6,12 +6,15 @@ import {
   CustomerInfo,
   ReviewInfo,
 } from 'components/section/confirm-booking';
-import { IBookingInfo, defaultBooking } from 'interfaces/booking.interface';
+import { IBookingInfo } from 'interfaces/booking.interface';
 import { IUserInfo, defaultCustomer } from 'interfaces/user.interface';
 import { GET } from 'utils/fetcher.utils';
 import { ENDPOINT_URL } from 'constants/api.const';
 import { IRoomDetail } from 'interfaces/room.interface';
-import { formatDateString, getDateString } from 'utils/datetime.utils';
+
+const today = new Date();
+const tomorrow = new Date();
+tomorrow.setDate(today.getDate() + 1);
 
 export default function ConfirmBooking(): JSX.Element {
   const location = useLocation();
@@ -35,18 +38,13 @@ export default function ConfirmBooking(): JSX.Element {
   }
 
   function getBookingDetails(): IBookingInfo {
-    // const details = localStorage.getItem('bookingDetails');
-    // if (!details) return defaultBooking;
-    // try {
-    //   const bookingInfo = JSON.parse(details);
-    //   return {
-    //     ...bookingInfo,
-    //     toDate: formatDateString(bookingInfo.toDate),
-    //     fromDate: formatDateString(bookingInfo.fromDate),
-    //   };
-    // } catch (error) {
-    //   return defaultBooking;
-    // }
+    const defaultBooking: IBookingInfo = {
+      totalAdults: 1,
+      totalKids: 0,
+      fromDate: today,
+      toDate: tomorrow,
+      payment_method: 'paypal',
+    };
     return defaultBooking;
   }
 
@@ -70,8 +68,6 @@ export default function ConfirmBooking(): JSX.Element {
               <CustomerInfo
                 customerInfo={customerInfo}
                 setCustomerInfo={setCustomerInfo}
-                bookingInfo={bookingDetail}
-                setBookingInfo={setBookingDetail}
               />
             </div>
           </div>

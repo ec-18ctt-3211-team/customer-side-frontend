@@ -1,13 +1,15 @@
 import { Button } from 'components/common';
-import { IBookingInfo } from 'interfaces/booking.interface';
+import { IBookingInfo, ICreateOrder } from 'interfaces/booking.interface';
 import { IUserInfo } from 'interfaces/user.interface';
 import { IRoomDetail } from 'interfaces/room.interface';
 import { getDateString } from 'utils/datetime.utils';
 import { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { SITE_PAGES } from 'constants/pages.const';
 import { getAddressString } from 'utils/format.utils';
 import PayPal from 'components/common/paypal';
+import * as fetch from 'utils/fetcher.utils';
+import { ENDPOINT_URL } from 'constants/api.const';
 
 interface Props {
   customer: IUserInfo;
@@ -18,7 +20,27 @@ interface Props {
 export default function ReviewInfo(props: Props): JSX.Element {
   const history = useHistory();
   const [price, setPrice] = useState(props.room.normal_price);
-  const [succeed, setSucceed] = useState<boolean>(false);
+
+  async function createAnOrder(payment_number?: string) {
+    const payload: ICreateOrder = {
+      room_id: props.room._id,
+      host_id: props.room.host_id,
+      customer_name: props.customer.username,
+      customer_phone: props.customer.phone_number,
+      email: props.customer.email,
+      num_adult: props.bookingDetail.totalAdults,
+      num_kid: props.bookingDetail.totalKids,
+      created_at: getDateString(new Date()),
+      day_start: getDateString(props.bookingDetail.fromDate),
+      day_end: getDateString(props.bookingDetail.toDate),
+      status: 'pending',
+      customer_id: props.customer.userID,
+      payment_number: payment_number,
+    };
+    const response = await fetch.POST(ENDPOINT_URL.POST.createAnOrder, payload);
+    console.log('res', response);
+    history.push(SITE_PAGES.SUCCESS_BOOKING.path);
+  }
 
   useEffect(() => {
     const start = props.bookingDetail.fromDate.getTime();
@@ -26,10 +48,6 @@ export default function ReviewInfo(props: Props): JSX.Element {
     if (end - start < 0) return;
     setPrice(props.room.normal_price * Math.round((end - start) / 86400000));
   }, [props.bookingDetail, props.room]);
-
-  useEffect(() => {
-    if (succeed) history.push(SITE_PAGES.SUCCESS_BOOKING.path);
-  }, [succeed]);
 
   return (
     <div className="h-[500px] w-[400px] flex flex-col items-center justify-evenly p-8 rounded-xl shadow-lg">
@@ -63,13 +81,13 @@ export default function ReviewInfo(props: Props): JSX.Element {
         <div className="uppercase">{props.bookingDetail.payment_method}</div>
       </div>
       {props.bookingDetail.payment_method === 'paypal' ? (
-        <div className="py-4">
-          <PayPal amount={price} setSucceed={setSucceed} />
+        <div className="py-2">
+          <PayPal amount={price} createAnOrder={createAnOrder} />
         </div>
       ) : (
-        <Button onClick={() => history.push(SITE_PAGES.SUCCESS_BOOKING.path)}>
-          Confirm
-        </Button>
+        <div className="h-1/6 py-2 w-1/2">
+          <Button onClick={() => createAnOrder()}>Confirm</Button>
+        </div>
       )}
     </div>
   );
