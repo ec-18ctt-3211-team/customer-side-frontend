@@ -16,6 +16,7 @@ interface Props {
   setUserInfo: (user: IUserInfo) => void;
   button: { label: string; onClick: () => void };
   create_an_account?: () => void;
+  message?: string;
 }
 
 export default function Form(props: Props): JSX.Element {
@@ -132,6 +133,10 @@ export default function Form(props: Props): JSX.Element {
           <div className="text-xs text-error">Passwords is not matched</div>
         )}
       </div>
+
+      {props.message && (
+        <div className="text-xs text-error">{props.message}</div>
+      )}
 
       {/* create account */}
       {props.type === 'login' && (

@@ -7,5 +7,6 @@ export const ENDPOINT_URL = {
   POST: {
     register: '/auth/register',
     login: '/auth/login',
+    createAnOrder: '/order',
   },
 };

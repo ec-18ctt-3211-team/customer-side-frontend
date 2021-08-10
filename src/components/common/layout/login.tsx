@@ -8,10 +8,12 @@ interface Props {
   userInfo: IUserInfo;
   setUserInfo: (userInfo: IUserInfo) => void;
   setShow: (isShow: NavbarStatus | null) => void;
+  message: string;
+  setMessage: (message: string) => void;
 }
 
 export default function Login(props: Props): JSX.Element {
-  const { userInfo, setUserInfo, setShow } = props;
+  const { userInfo, setUserInfo, setShow, message, setMessage } = props;
 
   async function login() {
     if (!userInfo.password) return;
@@ -20,8 +22,8 @@ export default function Login(props: Props): JSX.Element {
       password: userInfo.password,
     };
     setShow('loading');
-    const response = await POST(ENDPOINT_URL.POST.login, payload);
-    if (response.data.valid) {
+    try {
+      const response = await POST(ENDPOINT_URL.POST.login, payload);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userID', response.data.userID);
       setUserInfo({
@@ -30,13 +32,18 @@ export default function Login(props: Props): JSX.Element {
         username: response.data.name,
         ava: BASE + response.data.ava,
       });
-    } else alert(response.data.message);
-    setShow(null);
+      setMessage('');
+      setShow(null);
+    } catch (error: any) {
+      setMessage(error.response.data.message);
+      console.log(error);
+      setShow('login');
+    }
   }
 
   return (
     <Popup>
-      <div className="w-[350px] h-[350px] relative">
+      <div className="w-[350px] h-[350px] flex flex-col">
         <Form
           title="login"
           type="login"
@@ -47,6 +54,7 @@ export default function Login(props: Props): JSX.Element {
             onClick: login,
           }}
           create_an_account={() => setShow('signup')}
+          message={message}
         />
       </div>
     </Popup>

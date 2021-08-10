@@ -26,6 +26,7 @@ export default function Navbar(props: Props): JSX.Element {
   const history = useHistory();
   const [userInfo, setUserInfo] = useState<IUserInfo>(DefaultInfo);
   const [isShow, setShow] = useState<NavbarStatus | null>(null);
+  const [message, setMessage] = useState<string>('');
 
   function checkAuthorized() {
     const token = localStorage.getItem('token');
@@ -36,7 +37,7 @@ export default function Navbar(props: Props): JSX.Element {
 
   useEffect(() => {
     setAuthorized(checkAuthorized());
-  }, [localStorage]);
+  }, [localStorage, userInfo]);
 
   return (
     <div>
@@ -83,6 +84,7 @@ export default function Navbar(props: Props): JSX.Element {
                 className="px-4"
                 onClick={() => {
                   setAuthorized(false);
+                  localStorage.clear();
                   history.push(SITE_PAGES.MAIN.path);
                 }}
               >
@@ -104,6 +106,8 @@ export default function Navbar(props: Props): JSX.Element {
           userInfo={userInfo}
           setUserInfo={setUserInfo}
           setShow={setShow}
+          message={message}
+          setMessage={setMessage}
         />
       )}
       {isShow === 'loading' && <Loading />}

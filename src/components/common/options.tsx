@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Icon, downSmallOutline } from 'utils/icon.utils';
 
-interface Props {
+interface Props<T> {
   label?: string;
-  options: string[];
-  currentOptions: string;
-  setCurrentOptions: (option: string) => void;
+  options: { value: T; label: string }[];
+  currentOptions: T;
+  setCurrentOptions: (option: T) => void;
 }
 
-export default function SelectOptions(props: Props): JSX.Element {
+export default function SelectOptions<T>(props: Props<T>): JSX.Element {
   const [dropdown, setDropdown] = useState<boolean>(false);
   return (
     <div className="select-none cursor-pointer">
@@ -26,7 +26,7 @@ export default function SelectOptions(props: Props): JSX.Element {
         <div className="bg-gray-50 text-gray-700 mx-14 my-1 shadow-lg rounded">
           {props.options.map((option, index) => (
             <div
-              key={option}
+              key={index}
               className={[
                 'py-2 text-center',
                 index < props.options.length - 1
@@ -35,11 +35,11 @@ export default function SelectOptions(props: Props): JSX.Element {
                 'hover:text-gray-50 hover:bg-gray-600',
               ].join(' ')}
               onClick={() => {
-                props.setCurrentOptions(option);
+                props.setCurrentOptions(option.value);
                 setDropdown(!dropdown);
               }}
             >
-              {option}
+              {option.label}
             </div>
           ))}
         </div>

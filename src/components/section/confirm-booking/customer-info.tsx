@@ -1,27 +1,12 @@
-import { useState, useEffect } from 'react';
-import { DivPx, Input, SelectOption } from 'components/common';
-import { IBookingInfo } from 'interfaces/booking.interface';
+import { DivPx, Input } from 'components/common';
 import { IUserInfo } from 'interfaces/user.interface';
 
 interface Props {
   customerInfo: IUserInfo;
   setCustomerInfo: (detail: IUserInfo) => void;
-  bookingInfo: IBookingInfo;
-  setBookingInfo: (detail: IBookingInfo) => void;
 }
 
 export default function CustomerInfo(props: Props): JSX.Element {
-  const [currentOption, setCurrentOption] = useState(
-    props.bookingInfo.payment_method,
-  );
-
-  useEffect(() => {
-    props.setBookingInfo({
-      ...props.bookingInfo,
-      payment_method: currentOption,
-    });
-  }, [currentOption]);
-
   return (
     <div className="font-medium uppercase">
       <div className="py-4 font-bold text-lg">Customer information</div>
@@ -65,13 +50,6 @@ export default function CustomerInfo(props: Props): JSX.Element {
               email: e.target.value,
             })
           }
-        />
-        <DivPx size={28} />
-        <SelectOption
-          label="payment method"
-          options={['paypal', 'momo', 'cash']}
-          currentOptions={currentOption}
-          setCurrentOptions={setCurrentOption}
         />
       </div>
     </div>
