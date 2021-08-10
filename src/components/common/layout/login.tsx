@@ -24,14 +24,15 @@ export default function Login(props: Props): JSX.Element {
     setShow('loading');
     try {
       const response = await POST(ENDPOINT_URL.POST.login, payload);
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userID', response.data.userID);
       setUserInfo({
         ...userInfo,
-        userID: response.data.userID,
+        userID: response.data.userId,
         username: response.data.name,
         ava: BASE + response.data.ava,
       });
+      // localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userID', response.data.userId);
+
       setMessage('');
       setShow(null);
     } catch (error: any) {

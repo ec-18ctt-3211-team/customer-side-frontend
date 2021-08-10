@@ -29,8 +29,8 @@ export default function Navbar(props: Props): JSX.Element {
   const [message, setMessage] = useState<string>('');
 
   function checkAuthorized() {
-    const token = localStorage.getItem('token');
-    if (token) {
+    const userID = localStorage.getItem('userID');
+    if (userID) {
       return true;
     } else return false;
   }
