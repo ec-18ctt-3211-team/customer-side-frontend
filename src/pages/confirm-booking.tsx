@@ -58,18 +58,16 @@ export default function ConfirmBooking(): JSX.Element {
       {roomDetails ? (
         <div className="flex justify-between w-full">
           {/* edit data */}
-          <div className="lg:w-1/3 flex flex-col">
+          <div className="lg:w-1/3 h-full flex flex-col">
             <BookingInfo
               bookingDetail={bookingDetail}
               setBookingDetail={setBookingDetail}
               roomDetails={roomDetails}
             />
-            <div className="mt-auto pt-12">
-              <CustomerInfo
-                customerInfo={customerInfo}
-                setCustomerInfo={setCustomerInfo}
-              />
-            </div>
+            <CustomerInfo
+              customerInfo={customerInfo}
+              setCustomerInfo={setCustomerInfo}
+            />
           </div>
 
           {/* confirm data */}

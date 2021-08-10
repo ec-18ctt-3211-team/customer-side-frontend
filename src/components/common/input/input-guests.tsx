@@ -17,7 +17,7 @@ export default function InputGuests(props: Props): JSX.Element {
             'rounded-full bg-brown-200 text-brown-700',
             'hover:text-brown-100 hover:bg-brown-600',
           ].join(' ')}
-          onClick={() => totalAdults > 0 && setTotalAdults(totalAdults - 1)}
+          onClick={() => totalAdults > 1 && setTotalAdults(totalAdults - 1)}
         >
           <Icon icon={minusSmallOutline} />
         </div>

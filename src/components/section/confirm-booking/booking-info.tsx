@@ -53,8 +53,9 @@ export default function BookingInfo(props: Props): JSX.Element {
           onChange={(fromDate: Date) =>
             props.setBookingDetail({ ...props.bookingDetail, fromDate })
           }
+          className="border outline-none py-1 px-4 rounded"
         />
-        <div className="pr-2">to:</div>
+        <div className="pr-2 ml-4">to:</div>
         <DatePicker
           placeholderText="Enter end date"
           selected={props.bookingDetail.toDate}
@@ -68,10 +69,11 @@ export default function BookingInfo(props: Props): JSX.Element {
           onChange={(toDate: Date) =>
             props.setBookingDetail({ ...props.bookingDetail, toDate })
           }
+          className="border outline-none py-1 px-4 rounded"
         />
       </div>
       <DivPx size={28} />
-      <div className="w-2/3 pb-6 px-4">
+      <div className="w-2/3 px-4">
         <SelectOption<PaymentType>
           label="payment method"
           options={[{ value: 'paypal', label: 'Paypal' }]}

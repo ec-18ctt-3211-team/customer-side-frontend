@@ -1,4 +1,4 @@
-import { Button } from 'components/common';
+import { Button, Loading } from 'components/common';
 import { IBookingInfo, ICreateOrder } from 'interfaces/booking.interface';
 import { IUserInfo } from 'interfaces/user.interface';
 import { IRoomDetail } from 'interfaces/room.interface';
@@ -17,29 +17,53 @@ interface Props {
   room: IRoomDetail;
 }
 
+const emailValidRegex =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
 export default function ReviewInfo(props: Props): JSX.Element {
   const history = useHistory();
   const [price, setPrice] = useState(props.room.normal_price);
+  const [loading, setLoading] = useState(false);
+
+  function checkInfo() {
+    if (
+      props.customer.username === '' ||
+      props.customer.phone_number === '' ||
+      !props.customer.email.match(emailValidRegex)
+    )
+      return false;
+    return true;
+  }
 
   async function createAnOrder(payment_number?: string) {
-    const payload: ICreateOrder = {
-      room_id: props.room._id,
-      host_id: props.room.host_id,
-      customer_name: props.customer.username,
-      customer_phone: props.customer.phone_number,
-      email: props.customer.email,
-      num_adult: props.bookingDetail.totalAdults,
-      num_kid: props.bookingDetail.totalKids,
-      created_at: getDateString(new Date()),
-      day_start: getDateString(props.bookingDetail.fromDate),
-      day_end: getDateString(props.bookingDetail.toDate),
-      status: 'pending',
-      customer_id: props.customer.userID,
-      payment_number: payment_number,
-    };
-    const response = await fetch.POST(ENDPOINT_URL.POST.createAnOrder, payload);
-    console.log('res', response);
-    history.push(SITE_PAGES.SUCCESS_BOOKING.path);
+    try {
+      setLoading(true);
+      const payload: ICreateOrder = {
+        room_id: props.room._id,
+        host_id: props.room.host_id,
+        customer_name: props.customer.username,
+        customer_phone: props.customer.phone_number,
+        email: props.customer.email,
+        num_adult: props.bookingDetail.totalAdults,
+        num_kid: props.bookingDetail.totalKids,
+        created_at: getDateString(new Date()),
+        day_start: getDateString(props.bookingDetail.fromDate),
+        day_end: getDateString(props.bookingDetail.toDate),
+        status: 'pending',
+        customer_id:
+          props.customer.userID !== '' ? props.customer.userID : null,
+        payment_number: payment_number,
+      };
+      const response = await fetch.POST(
+        ENDPOINT_URL.POST.createAnOrder,
+        payload,
+      );
+      if (response.data.valid) history.push(SITE_PAGES.SUCCESS_BOOKING.path);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -50,44 +74,53 @@ export default function ReviewInfo(props: Props): JSX.Element {
   }, [props.bookingDetail, props.room]);
 
   return (
-    <div className="h-[500px] w-[400px] flex flex-col items-center justify-evenly p-8 rounded-xl shadow-lg">
-      <div className="font-bold text-xl uppercase">{props.room.title}</div>
-      <div className="lowercase italic text-center">
-        {getAddressString(props.room.address)}
-      </div>
-      <div className="flex justify-evenly w-full">
-        <strong>Customer: </strong> {props.customer.username}
-      </div>
-      <div className="flex justify-between w-full">
-        <div>
-          <strong>From:</strong> {getDateString(props.bookingDetail.fromDate)}
-        </div>
-        <div>
-          <strong>To:</strong> {getDateString(props.bookingDetail.toDate)}
-        </div>
-      </div>
-      <div className="flex justify-evenly w-3/5">
-        <strong>Guests:</strong>
-        <div>
-          <div>{props.bookingDetail.totalAdults} Adulst</div>
-          <div>{props.bookingDetail.totalKids} Kids</div>
-        </div>
-      </div>
-      <div className="flex justify-evenly w-3/5">
-        <strong>Total:</strong> <div>${price}</div>
-      </div>
-      <div className="flex justify-evenly w-full">
-        <strong>Payment method:</strong>
-        <div className="uppercase">{props.bookingDetail.payment_method}</div>
-      </div>
-      {props.bookingDetail.payment_method === 'paypal' ? (
-        <div className="py-2">
-          <PayPal amount={price} createAnOrder={createAnOrder} />
+    <div>
+      {!loading ? (
+        <div className="h-[500px] w-[400px] flex flex-col items-center justify-evenly p-8 rounded-xl shadow-lg">
+          <div className="font-bold text-xl uppercase">{props.room.title}</div>
+          <div className="lowercase italic text-center">
+            {getAddressString(props.room.address)}
+          </div>
+          <div className="flex justify-evenly w-full">
+            <strong>Customer: </strong> {props.customer.username}
+          </div>
+          <div className="flex justify-between w-full">
+            <div>
+              <strong>From:</strong>{' '}
+              {getDateString(props.bookingDetail.fromDate)}
+            </div>
+            <div>
+              <strong>To:</strong> {getDateString(props.bookingDetail.toDate)}
+            </div>
+          </div>
+          <div className="flex justify-evenly w-3/5">
+            <strong>Guests:</strong>
+            <div>
+              <div>{props.bookingDetail.totalAdults} Adulst</div>
+              <div>{props.bookingDetail.totalKids} Kids</div>
+            </div>
+          </div>
+          <div className="flex justify-evenly w-3/5">
+            <strong>Total:</strong> <div>${price}</div>
+          </div>
+          <div className="flex justify-evenly w-full">
+            <strong>Payment method:</strong>
+            <div className="uppercase">
+              {props.bookingDetail.payment_method}
+            </div>
+          </div>
+          {checkInfo() && props.bookingDetail.payment_method === 'paypal' ? (
+            <div className="py-2">
+              <PayPal amount={price} createAnOrder={createAnOrder} />
+            </div>
+          ) : (
+            <div className="text-error font-bold text-sm text-center py-2 px-4">
+              Please fill in customer info before continue
+            </div>
+          )}
         </div>
       ) : (
-        <div className="h-1/6 py-2 w-1/2">
-          <Button onClick={() => createAnOrder()}>Confirm</Button>
-        </div>
+        <Loading />
       )}
     </div>
   );

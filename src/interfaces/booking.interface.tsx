@@ -31,6 +31,6 @@ export interface ICreateOrder {
   day_start: string;
   day_end: string;
   status: string;
-  customer_id?: string;
+  customer_id: string | null;
   payment_number?: string;
 }
