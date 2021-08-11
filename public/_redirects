@@ -1,0 +1,4 @@
+/* /index.html 200
+/list_of_rooms /list_of_rooms/:city
+/room_details /room_details/:id
+/confirm_booking /confirm_booking/:id
