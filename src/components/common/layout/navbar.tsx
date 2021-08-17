@@ -19,6 +19,7 @@ const DefaultInfo = {
   phone_number: '',
   email: '',
   password: '',
+  payment: '',
 };
 
 export default function Navbar(props: Props): JSX.Element {

@@ -11,6 +11,7 @@ import passwordOutline from '@iconify/icons-teenyicons/password-outline';
 import addSmallOutline from '@iconify/icons-teenyicons/add-small-outline';
 import minusSmallOutline from '@iconify/icons-teenyicons/minus-small-outline';
 import logoutOutline from '@iconify/icons-teenyicons/logout-outline';
+import paypalSolid from '@iconify/icons-teenyicons/paypal-solid';
 
 export {
   Icon,
@@ -27,4 +28,5 @@ export {
   addSmallOutline,
   minusSmallOutline,
   logoutOutline,
+  paypalSolid,
 };

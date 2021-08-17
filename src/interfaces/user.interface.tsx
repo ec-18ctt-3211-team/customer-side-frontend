@@ -5,6 +5,7 @@ export interface IUserInfo {
   email: string;
   password?: string;
   ava?: string;
+  payment: string;
 }
 
 export const defaultCustomer: IUserInfo = {
@@ -12,4 +13,5 @@ export const defaultCustomer: IUserInfo = {
   username: '',
   phone_number: '',
   email: '',
+  payment: '',
 };
