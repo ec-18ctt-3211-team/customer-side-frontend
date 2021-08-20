@@ -20,7 +20,7 @@ export default function BriefInfo(props: Props): JSX.Element {
         {props.room.max_guest} guest(s)
       </div>
       <div className="flex justify-evenly w-full">
-        <strong>Customer: </strong> {props.customerInfo.username}
+        <strong>Customer: </strong> {props.customerInfo.name}
       </div>
       <div className="flex justify-between w-full">
         <div>

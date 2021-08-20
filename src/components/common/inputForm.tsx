@@ -5,7 +5,6 @@ import {
   userSolid,
   phoneOutline,
   passwordOutline,
-  paypalSolid,
 } from 'utils/icon.utils';
 import { useState } from 'react';
 import { IUserInfo } from 'interfaces/user.interface';
@@ -30,7 +29,7 @@ export default function Form(props: Props): JSX.Element {
         {props.title}
       </div>
       {props.type === 'profile' && (
-        <div className="text-xs pb-3 pt-1">{props.userInfo.userID}</div>
+        <div className="text-xs pb-3 pt-1">{props.userInfo._id}</div>
       )}
       {/* email */}
       <div className="py-2 h-full">
@@ -54,11 +53,11 @@ export default function Form(props: Props): JSX.Element {
             type="text"
             placeholder="full name"
             icon={{ icon: <Icon icon={userSolid} />, position: 'right' }}
-            value={props.userInfo.username}
+            value={props.userInfo.name}
             onChange={(e) =>
               props.setUserInfo({
                 ...props.userInfo,
-                username: e.target.value,
+                name: e.target.value,
               })
             }
           />
@@ -73,31 +72,13 @@ export default function Form(props: Props): JSX.Element {
             type="text"
             placeholder="phone number"
             icon={{ icon: <Icon icon={phoneOutline} />, position: 'right' }}
-            value={props.userInfo.phone_number}
+            value={props.userInfo.phone}
             onChange={(e) =>
               props.setUserInfo({
                 ...props.userInfo,
-                phone_number: e.target.value,
+                phone: e.target.value,
               })
             }
-          />
-        </div>
-      )}
-      
-      {props.type === 'profile' && (
-        <div className="py-2 h-full">
-          <Input
-            border="full"
-            type="text"
-            placeholder="payment number"
-            icon={{ icon: <Icon icon={paypalSolid} />, position: 'right' }}
-            value={props.userInfo.payment}
-            onChange={(e) => {
-              props.setUserInfo({
-                ...props.userInfo,
-                payment: e.target.value,
-              });
-            }}
           />
         </div>
       )}

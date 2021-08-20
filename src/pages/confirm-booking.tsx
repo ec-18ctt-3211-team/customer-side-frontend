@@ -24,18 +24,36 @@ export default function ConfirmBooking(): JSX.Element {
   );
   const [customerInfo, setCustomerInfo] = useState<IUserInfo>(defaultCustomer);
   const [roomDetails, setRoomDetails] = useState<IRoomDetail>();
+  const [loading, setLoading] = useState(false);
 
   async function fetchRoom() {
-    const path = location.pathname.split('/');
-    const roomID = path[path.length - 1];
-    const response = await GET(ENDPOINT_URL.GET.getRoomsByID(roomID));
-    setRoomDetails(response.data.room);
+    try {
+      setLoading(true);
+      const path = location.pathname.split('/');
+      const roomID = path[path.length - 1];
+      const response = await GET(ENDPOINT_URL.GET.getRoomsByID(roomID));
+      if (response.data.valid) setRoomDetails(response.data.room);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  function fetchUser() {
+  async function fetchUser() {
     const userID = localStorage.getItem('userID');
     if (!userID) return;
-    //fetch user info
+    try {
+      setLoading(true);
+      const response = await GET(ENDPOINT_URL.GET.getCustomerByID(userID));
+      if (response.data.valid) {
+        setCustomerInfo(response.data.customer);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   function getBookingDetails(): IBookingInfo {
@@ -58,7 +76,7 @@ export default function ConfirmBooking(): JSX.Element {
 
   return (
     <Layout>
-      {roomDetails ? (
+      {!loading && roomDetails ? (
         <div className="flex justify-between w-full">
           {/* edit data */}
           <div className="lg:w-1/3 h-full flex flex-col">

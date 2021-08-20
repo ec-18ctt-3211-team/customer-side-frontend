@@ -15,13 +15,13 @@ export default function CustomerInfo(props: Props): JSX.Element {
       <div className="p-4 flex">
         <div className="pb-2 w-full">Customer name: </div>
         <div className="border-b-2 w-full text-right">
-          {props.customerInfo.username}
+          {props.customerInfo.name}
         </div>
       </div>
       <div className="p-4 flex">
         <div className="pb-2 w-full">Phone number: </div>
         <div className="border-b-2 w-full text-right">
-          {props.customerInfo.phone_number}
+          {props.customerInfo.phone}
         </div>
       </div>
       <div className="p-4 flex">

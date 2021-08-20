@@ -17,9 +17,9 @@ export default function Signup(props: Props): JSX.Element {
     if (!userInfo.password) return;
     const payload = {
       email: userInfo.email,
-      name: userInfo.username,
+      name: userInfo.name,
       password: userInfo.password,
-      phone: userInfo.phone_number,
+      phone: userInfo.phone,
     };
     setShow('loading');
     const response = await POST(ENDPOINT_URL.POST.register, payload);

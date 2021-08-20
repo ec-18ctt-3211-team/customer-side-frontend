@@ -1,5 +1,5 @@
 import { Button, Loading } from 'components/common';
-import { IBookingInfo, ICreateOrder } from 'interfaces/booking.interface';
+import { IBookingInfo, IOrderInfo } from 'interfaces/booking.interface';
 import { IUserInfo } from 'interfaces/user.interface';
 import { IRoomDetail } from 'interfaces/room.interface';
 import { getDateString } from 'utils/datetime.utils';
@@ -27,8 +27,8 @@ export default function ReviewInfo(props: Props): JSX.Element {
 
   function checkInfo() {
     if (
-      props.customer.username === '' ||
-      props.customer.phone_number === '' ||
+      props.customer.name === '' ||
+      props.customer.phone === '' ||
       !props.customer.email.match(emailValidRegex)
     )
       return false;
@@ -38,11 +38,11 @@ export default function ReviewInfo(props: Props): JSX.Element {
   async function createAnOrder(payment_number?: string) {
     try {
       setLoading(true);
-      const payload: ICreateOrder = {
+      const payload: IOrderInfo = {
         room_id: props.room._id,
         host_id: props.room.host_id,
-        customer_name: props.customer.username,
-        customer_phone: props.customer.phone_number,
+        customer_name: props.customer.name,
+        customer_phone: props.customer.phone,
         email: props.customer.email,
         num_adult: props.bookingDetail.totalAdults,
         num_kid: props.bookingDetail.totalKids,
@@ -50,9 +50,9 @@ export default function ReviewInfo(props: Props): JSX.Element {
         day_start: getDateString(props.bookingDetail.fromDate),
         day_end: getDateString(props.bookingDetail.toDate),
         status: 'pending',
-        customer_id:
-          props.customer.userID !== '' ? props.customer.userID : null,
+        customer_id: props.customer._id !== '' ? props.customer._id : null,
         payment_number: payment_number,
+        price: price,
       };
       const response = await fetch.POST(
         ENDPOINT_URL.POST.createAnOrder,
@@ -82,7 +82,7 @@ export default function ReviewInfo(props: Props): JSX.Element {
             {getAddressString(props.room.address)}
           </div>
           <div className="flex justify-evenly w-full">
-            <strong>Customer: </strong> {props.customer.username}
+            <strong>Customer: </strong> {props.customer.name}
           </div>
           <div className="flex justify-between w-full">
             <div>

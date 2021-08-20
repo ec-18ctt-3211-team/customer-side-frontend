@@ -5,6 +5,7 @@ export const ENDPOINT_URL = {
     getRoomsByID: (id: string) => `/rooms/${id}`,
     getCustomerByID: (id: string) => `/customer/${id}`,
     getOrderByCustomerID: (userid: string) => `/order/customer/${userid}`,
+    getOrderByID: (id: string) => `/order/${id}`,
   },
   POST: {
     register: '/auth/register',
@@ -13,5 +14,5 @@ export const ENDPOINT_URL = {
   },
   PUT: {
     updateCustomerByID: (id: string) => `/customer/${id}`,
-  }
+  },
 };
