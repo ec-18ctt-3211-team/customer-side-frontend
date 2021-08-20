@@ -5,6 +5,7 @@ import {
   userSolid,
   phoneOutline,
   passwordOutline,
+  paypalSolid,
 } from 'utils/icon.utils';
 import { useState } from 'react';
 import { IUserInfo } from 'interfaces/user.interface';
@@ -79,6 +80,24 @@ export default function Form(props: Props): JSX.Element {
                 phone_number: e.target.value,
               })
             }
+          />
+        </div>
+      )}
+      
+      {props.type === 'profile' && (
+        <div className="py-2 h-full">
+          <Input
+            border="full"
+            type="text"
+            placeholder="payment number"
+            icon={{ icon: <Icon icon={paypalSolid} />, position: 'right' }}
+            value={props.userInfo.payment}
+            onChange={(e) => {
+              props.setUserInfo({
+                ...props.userInfo,
+                payment: e.target.value,
+              });
+            }}
           />
         </div>
       )}

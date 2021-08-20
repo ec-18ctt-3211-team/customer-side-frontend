@@ -48,6 +48,13 @@ export default function BookingTable(props: Props) {
     setRender(renderTable());
   }, [currentPage]);
 
+  useEffect(() => {
+    if(props.booking_history.length > 0){
+      setMaxPage(Math.ceil(props.booking_history.length / items_per_pages));
+    }
+    else setMaxPage(1);
+  }, []);
+
   return (
     <div className="bg-white rounded-xl shadow-lg w-full flex flex-col items-center p-6">
       <div className="uppercase font-bold text-brown text-xl pb-8">

@@ -15,3 +15,7 @@ export const GET = (url: string, data?: any) => {
 export const POST = (url: string, data?: any) => {
   return axios.post(BASE + url, data);
 };
+
+export const PUT = (url: string, data?: any) => {
+  return axios.put(BASE + url, data);
+};
