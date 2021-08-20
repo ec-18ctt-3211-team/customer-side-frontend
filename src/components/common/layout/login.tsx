@@ -26,8 +26,8 @@ export default function Login(props: Props): JSX.Element {
       const response = await POST(ENDPOINT_URL.POST.login, payload);
       setUserInfo({
         ...userInfo,
-        userID: response.data.userId,
-        username: response.data.name,
+        _id: response.data.userId,
+        name: response.data.name,
         ava: BASE + response.data.ava,
       });
       // localStorage.setItem('token', response.data.token);

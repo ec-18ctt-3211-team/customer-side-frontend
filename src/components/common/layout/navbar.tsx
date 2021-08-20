@@ -2,7 +2,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Searchbar, DivPx, Loading } from '..';
 import { SITE_PAGES } from 'constants/pages.const';
 import { useState, useEffect } from 'react';
-import { IUserInfo } from 'interfaces/user.interface';
+import { IUserInfo, defaultCustomer } from 'interfaces/user.interface';
 import { Icon, logoutOutline } from 'utils/icon.utils';
 import Signup from './signup';
 import Login from './login';
@@ -13,18 +13,10 @@ interface Props {
 
 export type NavbarStatus = 'login' | 'signup' | 'loading';
 
-const DefaultInfo = {
-  userID: '',
-  username: '',
-  phone_number: '',
-  email: '',
-  password: '',
-};
-
 export default function Navbar(props: Props): JSX.Element {
   const [isAuthorized, setAuthorized] = useState(checkAuthorized());
   const history = useHistory();
-  const [userInfo, setUserInfo] = useState<IUserInfo>(DefaultInfo);
+  const [userInfo, setUserInfo] = useState<IUserInfo>(defaultCustomer);
   const [isShow, setShow] = useState<NavbarStatus | null>(null);
   const [message, setMessage] = useState<string>('');
 

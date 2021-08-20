@@ -14,12 +14,12 @@ export default function CustomerInfo(props: Props): JSX.Element {
         <Input
           border="line"
           type="text"
-          value={props.customerInfo.username}
+          value={props.customerInfo.name}
           label={{ value: 'customer name', position: 'top' }}
           onChange={(e) =>
             props.setCustomerInfo({
               ...props.customerInfo,
-              username: e.target.value,
+              name: e.target.value,
             })
           }
         />
@@ -28,12 +28,12 @@ export default function CustomerInfo(props: Props): JSX.Element {
           <Input
             border="line"
             type="text"
-            value={props.customerInfo.phone_number}
+            value={props.customerInfo.phone}
             label={{ value: 'phone number', position: 'top' }}
             onChange={(e) =>
               props.setCustomerInfo({
                 ...props.customerInfo,
-                phone_number: e.target.value,
+                phone: e.target.value,
               })
             }
           />

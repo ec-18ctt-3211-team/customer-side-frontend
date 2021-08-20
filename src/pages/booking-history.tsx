@@ -5,32 +5,66 @@ import {
   BriefInfo,
   CustomerInfo,
 } from 'components/section/booking-history';
-import { IBookingInfo } from 'interfaces/booking.interface';
+import { IBookingInfo, IOrderInfo } from 'interfaces/booking.interface';
 import { IUserInfo, defaultCustomer } from 'interfaces/user.interface';
 import { IRoomDetail } from 'interfaces/room.interface';
+import { useLocation } from 'react-router';
+import { GET } from 'utils/fetcher.utils';
+import { ENDPOINT_URL } from 'constants/api.const';
+import { formatDateString } from 'utils/datetime.utils';
 
 const today = new Date();
 const tomorrow = new Date();
 tomorrow.setDate(today.getDate() + 1);
 
 export default function BookingHistory(): JSX.Element {
+  const location = useLocation();
   const [bookingDetail, setBookingDetail] = useState<IBookingInfo>();
   const [customerInfo, setCustomerInfo] = useState<IUserInfo>();
   const [room, setRoom] = useState<IRoomDetail>();
 
-  function getBookingHistory() {
-    setBookingDetail({
-      totalAdults: 1,
-      totalKids: 0,
-      fromDate: today,
-      toDate: tomorrow,
-      payment_method: 'paypal',
-    });
-    setCustomerInfo(defaultCustomer);
-    // setRoom()
+  async function fetchRoom(id: string) {
+    try {
+      const response = await GET(ENDPOINT_URL.GET.getRoomsByID(id));
+      if (response.data.valid) {
+        setRoom(response.data.rooms);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  useEffect(() => getBookingHistory(), []);
+  async function fetchOrder() {
+    try {
+      const path = location.pathname.split('/');
+      const response = await GET(
+        ENDPOINT_URL.GET.getOrderByID(path[path.length - 1]),
+      );
+      if (response.data.valid) {
+        const order = response.data.order as IOrderInfo;
+        setBookingDetail({
+          totalAdults: order.num_adult,
+          totalKids: order.num_kid,
+          fromDate: formatDateString(order.day_start),
+          toDate: formatDateString(order.day_end),
+          payment_method: 'paypal',
+        });
+        setCustomerInfo({
+          ...defaultCustomer,
+          name: order.customer_name,
+          phone: order.customer_phone,
+          email: order.email,
+        });
+        fetchRoom(order.room_id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchOrder();
+  }, []);
 
   return (
     <Layout>
