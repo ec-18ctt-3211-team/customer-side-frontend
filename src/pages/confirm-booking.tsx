@@ -11,6 +11,7 @@ import { IUserInfo, defaultCustomer } from 'interfaces/user.interface';
 import { GET } from 'utils/fetcher.utils';
 import { ENDPOINT_URL } from 'constants/api.const';
 import { IRoomDetail } from 'interfaces/room.interface';
+import { formatDateString } from 'utils/datetime.utils';
 
 const today = new Date();
 const tomorrow = new Date();
@@ -38,14 +39,16 @@ export default function ConfirmBooking(): JSX.Element {
   }
 
   function getBookingDetails(): IBookingInfo {
-    const defaultBooking: IBookingInfo = {
-      totalAdults: 1,
-      totalKids: 0,
-      fromDate: today,
-      toDate: tomorrow,
-      payment_method: 'paypal',
+    const storage = localStorage.getItem('bookingDetails');
+    let data;
+    if (storage) data = JSON.parse(storage);
+    return {
+      totalAdults: data.totalAdults ?? 1,
+      totalKids: data.totalKids ?? 0,
+      fromDate: formatDateString(data.fromDate) ?? today,
+      toDate: formatDateString(data.toDate) ?? tomorrow,
+      payment_method: data.payment_method ?? 'paypal',
     };
-    return defaultBooking;
   }
 
   useEffect(() => {

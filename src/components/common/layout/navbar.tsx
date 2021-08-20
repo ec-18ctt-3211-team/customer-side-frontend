@@ -70,15 +70,17 @@ export default function Navbar(props: Props): JSX.Element {
                   'hover:text-brown-100 hover:bg-brown-600',
                 ].join(' ')}
               >
-                {userInfo.ava ? (
+                {localStorage.getItem('userImg') ? (
                   <img
-                    src={userInfo.ava}
+                    src={localStorage.getItem('userImg') ?? '#'}
                     className="w-6 h-6 bg-gray-300 rounded-full"
                   />
                 ) : (
                   <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
                 )}
-                <span className="px-2">{userInfo.username}</span>
+                <span className="px-2">
+                  {localStorage.getItem('username') ?? ''}
+                </span>
               </Link>
               <span
                 className="px-4"
