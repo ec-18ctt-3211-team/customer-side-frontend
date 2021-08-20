@@ -32,8 +32,8 @@ export default function Login(props: Props): JSX.Element {
       });
       // localStorage.setItem('token', response.data.token);
       localStorage.setItem('userID', response.data.userId);
-      localStorage.setItem('username', response.data.username);
-      localStorage.setItem('userImg', response.data.userImg);
+      localStorage.setItem('username', response.data.name);
+      localStorage.setItem('userImg', BASE + response.data.ava);
 
       setMessage('');
       setShow(null);
