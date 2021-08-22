@@ -1,33 +1,30 @@
-import { DivPx } from 'components/common';
+import { SortType } from 'interfaces/room.interface';
 import { useState } from 'react';
-import { InlineIcon, downSmallOutline } from 'utils/icon.utils';
 
 interface Props {
-  location: string;
   total_result: number;
+  sorting: SortType | undefined;
+  setSorting: (sort: SortType | undefined) => void;
 }
 
 const SortOptions = [
   { value: undefined, label: 'Sort by Price' },
-  { value: 'ascending', label: 'Ascending' },
-  { value: 'descending', label: 'Descending' },
+  { value: 'inc', label: 'Ascending' },
+  { value: 'dec', label: 'Descending' },
 ];
 
 export default function FilterBar(props: Props): JSX.Element {
-  const [currentOption, setCurrentOption] = useState<string>();
   return (
     <div className="flex flex-wrap items-end justify-center text-center">
-      <span className="mr-auto py-2">
-        {props.total_result} place(s) in {props.location}
-      </span>
+      <span className="mr-auto py-2">found {props.total_result} place(s)</span>
       <div className="text-center border rounded-xl flex p-2">
         <select
           className="pr-2 outline-none"
-          value={currentOption}
-          onChange={(e) => setCurrentOption(e.target.value)}
+          value={props.sorting}
+          onChange={(e) => props.setSorting(e.target.value as SortType)}
         >
-          {SortOptions.map((option) => (
-            <option value={option.value} key={option.value}>
+          {SortOptions.map((option, index) => (
+            <option value={option.value} key={index}>
               {option.label}
             </option>
           ))}

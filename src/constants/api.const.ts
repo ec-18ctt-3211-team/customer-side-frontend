@@ -1,7 +1,25 @@
+import { SortType } from 'interfaces/room.interface';
+
 export const ENDPOINT_URL = {
   GET: {
-    getRoomsByCity: (city: string, itemsPerPage: number, pageNumber: number) =>
-      `/rooms?city=${city}&limit=${itemsPerPage}&page=${pageNumber}`,
+    getRoomsByCity: (
+      itemsPerPage: number,
+      pageNumber: number,
+      sort?: SortType,
+      city?: string,
+      search?: string,
+    ) => {
+      const params = new URLSearchParams();
+      if (sort) params.append('sort', sort);
+      params.append('limit', itemsPerPage.toString());
+      params.append('page', pageNumber.toString());
+      if (city) {
+        params.append('city', city);
+        return `/rooms?${params.toString()}`;
+      } else {
+        return `/rooms?${search}&${params.toString()}`;
+      }
+    },
     getRoomsByID: (id: string) => `/rooms/${id}`,
     getRoomsByHostID: (
       hostID: string,

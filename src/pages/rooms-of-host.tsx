@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { RoomCard } from 'components/section/list_of_rooms';
 import { Pagination, Layout, Loading } from 'components/common';
-import { ROOMS } from 'constants/images.const';
 import { IRoomDetail } from 'interfaces/room.interface';
 import { IUserInfo } from 'interfaces/user.interface';
 import { GET, BASE } from 'utils/fetcher.utils';
@@ -61,7 +60,7 @@ export default function RoomsOfHost(): JSX.Element {
       {hostInfo && rooms ? (
         <div className="flex flex-col min-h-[80vh]">
           <div className="flex">
-            <div className="w-52 h-60 mx-2 my-4 text-sm bg-gray-50 rounded-xl flex flex-col relative">
+            <div className="w-52 h-60 ml-2 mr-10 my-4 text-sm bg-gray-50 rounded-xl flex flex-col relative">
               <img
                 src={BASE + hostInfo.ava}
                 className="w-full rounded-t-xl shadow bg-brown-200 object-cover"
@@ -71,9 +70,13 @@ export default function RoomsOfHost(): JSX.Element {
                 Total rooms: {rooms.length}
               </div>
             </div>
-            <div className="flex flex-wrap w-full justify-evenly">
+            <div className="flex flex-wrap w-full">
               {rooms.map((room, index) => {
-                return <RoomCard detail={room} key={index} />;
+                return (
+                  <div className="mx-2">
+                    <RoomCard detail={room} key={index} />
+                  </div>
+                );
               })}
             </div>
           </div>

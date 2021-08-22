@@ -11,17 +11,37 @@ export default function ViewAPlace(): JSX.Element {
   const location = useLocation();
   const [roomDetails, setRoomDetails] = useState<IRoomDetail>();
   const [hostDetails, setHostDetails] = useState<IUserInfo>();
+  const [loading, setLoading] = useState(false);
+
+  async function fetchHost(id: string) {
+    try {
+      setLoading(true);
+      const response = await GET(ENDPOINT_URL.GET.getCustomerByID(id));
+      if (response.data.valid) {
+        setHostDetails(response.data.customer);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function fetchRoom() {
-    const path = location.pathname.split('/');
-    const roomID = path[path.length - 1];
-    const response = await GET(ENDPOINT_URL.GET.getRoomsByID(roomID));
-    setRoomDetails(response.data.room);
-    setHostDetails({
-      ...defaultCustomer,
-      _id: response.data.room.host_id,
-      name: 'Luxury house',
-    });
+    try {
+      setLoading(true);
+      const path = location.pathname.split('/');
+      const roomID = path[path.length - 1];
+      const response = await GET(ENDPOINT_URL.GET.getRoomsByID(roomID));
+      if (response.data.valid) {
+        setRoomDetails(response.data.room);
+        fetchHost(response.data.room.host_id);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -30,7 +50,7 @@ export default function ViewAPlace(): JSX.Element {
 
   return (
     <Layout allowSearch>
-      {roomDetails && roomDetails.photos && hostDetails ? (
+      {!loading && roomDetails && roomDetails.photos && hostDetails ? (
         <div>
           {roomDetails.photos.length > 0 && (
             <ImageSlider
