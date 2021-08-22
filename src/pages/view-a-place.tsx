@@ -4,13 +4,13 @@ import { useLocation } from 'react-router-dom';
 import { RoomDetail, Dialogue } from 'components/section/view-a-place';
 import { GET, BASE } from 'utils/fetcher.utils';
 import { ENDPOINT_URL } from 'constants/api.const';
+import { defaultCustomer, IUserInfo } from 'interfaces/user.interface';
 import { IRoomDetail } from 'interfaces/room.interface';
-import { IHostDetail } from 'interfaces/host.interface';
 
 export default function ViewAPlace(): JSX.Element {
   const location = useLocation();
   const [roomDetails, setRoomDetails] = useState<IRoomDetail>();
-  const [hostDetails, setHostDetails] = useState<IHostDetail>();
+  const [hostDetails, setHostDetails] = useState<IUserInfo>();
 
   async function fetchRoom() {
     const path = location.pathname.split('/');
@@ -18,8 +18,9 @@ export default function ViewAPlace(): JSX.Element {
     const response = await GET(ENDPOINT_URL.GET.getRoomsByID(roomID));
     setRoomDetails(response.data.room);
     setHostDetails({
+      ...defaultCustomer,
       _id: response.data.room.host_id,
-      host_name: 'Luxury house',
+      name: 'Luxury house',
     });
   }
 
