@@ -27,7 +27,7 @@ export default function BookingHistory(): JSX.Element {
     try {
       const response = await GET(ENDPOINT_URL.GET.getRoomsByID(id));
       if (response.data.valid) {
-        setRoom(response.data.rooms);
+        setRoom(response.data.room);
       }
     } catch (error) {
       console.log(error);

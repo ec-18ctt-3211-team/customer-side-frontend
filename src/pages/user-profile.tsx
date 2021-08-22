@@ -6,10 +6,14 @@ import { IOrderInfo } from 'interfaces/booking.interface';
 import { GET, PUT } from 'utils/fetcher.utils';
 import { ENDPOINT_URL } from 'constants/api.const';
 
+const itemsPerPage = 6;
+
 export default function UserProfile(): JSX.Element {
   const [userInfo, setUserInfo] = useState<IUserInfo>();
   const [bookingHistory, setBookingHistory] = useState<IOrderInfo[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [maxPage, setMaxPage] = useState(1);
 
   async function fetchUserInfo() {
     const userID = localStorage.getItem('userID');
@@ -32,9 +36,16 @@ export default function UserProfile(): JSX.Element {
     if (!userID) return;
     try {
       setLoading(true);
-      const response = await GET(ENDPOINT_URL.GET.getOrderByCustomerID(userID));
+      const response = await GET(
+        ENDPOINT_URL.GET.getOrderByCustomerID(
+          userID,
+          itemsPerPage,
+          currentPage + 1,
+        ),
+      );
       if (response.data.valid) {
         setBookingHistory(response.data.orders);
+        setMaxPage(Math.ceil(response.data.total / itemsPerPage));
       }
     } catch (error) {
       console.log(error);
@@ -74,7 +85,7 @@ export default function UserProfile(): JSX.Element {
 
   return (
     <Layout>
-      {!loading && userInfo ? (
+      {!loading && userInfo && bookingHistory ? (
         <div className="-m-8 p-8 bg-gray-200 w-screen h-screen flex justify-between">
           <div className="w-[450px] h-[500px]">
             <Form
@@ -86,7 +97,13 @@ export default function UserProfile(): JSX.Element {
             />
           </div>
           <DivPx size={48} />
-          <BookingTable booking_history={bookingHistory} />
+          <BookingTable
+            booking_history={bookingHistory}
+            items_per_pages={itemsPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            maxPage={maxPage}
+          />
         </div>
       ) : (
         <Loading />

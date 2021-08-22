@@ -3,8 +3,17 @@ export const ENDPOINT_URL = {
     getRoomsByCity: (city: string, itemsPerPage: number, pageNumber: number) =>
       `/rooms?city=${city}&limit=${itemsPerPage}&page=${pageNumber}`,
     getRoomsByID: (id: string) => `/rooms/${id}`,
+    getRoomsByHostID: (
+      hostID: string,
+      itemsPerPage: number,
+      pageNumber: number,
+    ) => `/rooms/host/${hostID}?limit=${itemsPerPage}&page=${pageNumber}`,
     getCustomerByID: (id: string) => `/customer/${id}`,
-    getOrderByCustomerID: (userid: string) => `/order/customer/${userid}`,
+    getOrderByCustomerID: (
+      userid: string,
+      itemsPerPage: number,
+      pageNumber: number,
+    ) => `/order/customer/${userid}?limit=${itemsPerPage}&page=${pageNumber}`,
     getOrderByID: (id: string) => `/order/${id}`,
   },
   POST: {

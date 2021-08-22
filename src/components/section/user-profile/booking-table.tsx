@@ -6,25 +6,25 @@ import { SITE_PAGES } from 'constants/pages.const';
 
 interface Props {
   booking_history: IOrderInfo[];
-  items_per_pages?: number;
+  items_per_pages: number;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+  maxPage: number;
 }
 
 export default function BookingTable(props: Props) {
-  const { items_per_pages = 6 } = props;
-  const [currentPage, setCurrentPage] = useState<number>(0);
-  const [maxPage, setMaxPage] = useState<number>(10);
   const [render, setRender] = useState(renderTable());
 
   function renderTable() {
     return (
       <tbody className="text-center">
         {props.booking_history.map((item, index) => {
-          if (index > items_per_pages - 1) return;
+          if (index > props.items_per_pages - 1) return;
           return (
             <tr
               key={item._id}
               className={[
-                (index > 0 && index % (items_per_pages - 1) === 0) ||
+                (index > 0 && index % (props.items_per_pages - 1) === 0) ||
                 index === props.booking_history.length - 1
                   ? ''
                   : 'border-b-2 border-brown-500 ',
@@ -56,13 +56,7 @@ export default function BookingTable(props: Props) {
 
   useEffect(() => {
     setRender(renderTable());
-  }, [currentPage]);
-
-  useEffect(() => {
-    if (props.booking_history.length > 0) {
-      setMaxPage(Math.ceil(props.booking_history.length / items_per_pages));
-    } else setMaxPage(1);
-  }, []);
+  }, [props.currentPage]);
 
   return (
     <div className="bg-white rounded-xl shadow-lg w-full flex flex-col items-center p-6">
@@ -85,9 +79,9 @@ export default function BookingTable(props: Props) {
 
       <div className="mt-auto">
         <Pagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          maxPage={maxPage}
+          currentPage={props.currentPage}
+          setCurrentPage={props.setCurrentPage}
+          maxPage={props.maxPage}
         />
       </div>
     </div>

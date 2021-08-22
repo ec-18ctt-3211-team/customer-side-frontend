@@ -1,12 +1,12 @@
 import { SITE_PAGES } from 'constants/pages.const';
 import { IRoomDetail } from 'interfaces/room.interface';
-import { IHostDetail } from 'interfaces/host.interface';
+import { IUserInfo } from 'interfaces/user.interface';
 import { Link } from 'react-router-dom';
 import { getAddressString } from 'utils/format.utils';
 
 interface Props {
   roomDetails: IRoomDetail;
-  hostDetails: IHostDetail;
+  hostDetails: IUserInfo;
 }
 
 export default function RoomDetail(props: Props): JSX.Element {
@@ -17,10 +17,10 @@ export default function RoomDetail(props: Props): JSX.Element {
       </h1>
       <div className="flex justify-end underline py-2 select-none">
         <Link
-          to={SITE_PAGES.ROOMS_OF_HOST.path}
+          to={`${SITE_PAGES.ROOMS_OF_HOST.path}/${props.hostDetails._id}`}
           className="hover:text-brown-600 hover:italic"
         >
-          by {props.hostDetails.host_name}
+          by {props.hostDetails.name}
         </Link>
       </div>
       <div className="py-2 italic">{props.roomDetails.max_guest} guest(s)</div>
