@@ -23,8 +23,8 @@ export default function FilterBar(props: Props): JSX.Element {
           value={props.sorting}
           onChange={(e) => props.setSorting(e.target.value as SortType)}
         >
-          {SortOptions.map((option) => (
-            <option value={option.value} key={option.value}>
+          {SortOptions.map((option, index) => (
+            <option value={option.value} key={index}>
               {option.label}
             </option>
           ))}

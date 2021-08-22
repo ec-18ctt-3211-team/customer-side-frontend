@@ -23,16 +23,24 @@ export default function ListOfRooms(): JSX.Element {
       const path = location.pathname.split('/');
       const city = path[path.length - 1];
       const response = await GET(
-        ENDPOINT_URL.GET.getRoomsByCity(city, LIMIT, currentPage + 1, sorting),
+        ENDPOINT_URL.GET.getRoomsByCity(
+          LIMIT,
+          currentPage + 1,
+          sorting,
+          city.includes('type') ? undefined : city,
+          city.includes('type') ? city : undefined,
+        ),
       );
       const data: IResponse = response.data;
-      const numberOfPages = Math.floor(data.rooms.length / LIMIT);
+      if (data.valid) {
+        const numberOfPages = Math.floor(data.rooms.length / LIMIT);
 
-      setListOfRooms(data.rooms);
-      setTotalPages(
-        data.rooms.length % LIMIT === 0 ? numberOfPages : numberOfPages + 1,
-      );
-      setTotalResult(data.total);
+        setListOfRooms(data.rooms);
+        setTotalPages(
+          data.rooms.length % LIMIT === 0 ? numberOfPages : numberOfPages + 1,
+        );
+        setTotalResult(data.total);
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -42,7 +50,7 @@ export default function ListOfRooms(): JSX.Element {
 
   useEffect(() => {
     fetchRooms();
-  }, [currentPage, sorting]);
+  }, [currentPage, sorting, location.pathname]);
 
   return (
     <Layout allowSearch>
