@@ -85,7 +85,7 @@ export default function UserProfile(): JSX.Element {
 
   return (
     <Layout>
-      {!loading && userInfo ? (
+      {!loading && userInfo && bookingHistory ? (
         <div className="-m-8 p-8 bg-gray-200 w-screen h-screen flex justify-between">
           <div className="w-[450px] h-[500px]">
             <Form

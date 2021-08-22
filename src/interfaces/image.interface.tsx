@@ -4,5 +4,5 @@ export interface IImage {
   room_id?: string;
   path: string;
   href?: string;
-  _v?: number;
+  __v?: number;
 }

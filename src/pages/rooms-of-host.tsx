@@ -5,7 +5,7 @@ import { Pagination, Layout, Loading } from 'components/common';
 import { ROOMS } from 'constants/images.const';
 import { IRoomDetail } from 'interfaces/room.interface';
 import { IUserInfo } from 'interfaces/user.interface';
-import { GET } from 'utils/fetcher.utils';
+import { GET, BASE } from 'utils/fetcher.utils';
 import { ENDPOINT_URL } from 'constants/api.const';
 
 const itemsPerPage = 10;
@@ -61,12 +61,15 @@ export default function RoomsOfHost(): JSX.Element {
       {hostInfo && rooms ? (
         <div className="flex flex-col min-h-[80vh]">
           <div className="flex">
-            <div className="w-52 h-60 mx-2 my-4 text-sm bg-gray-200 rounded-xl flex flex-col hover:shadow-lg relative">
+            <div className="w-52 h-60 mx-2 my-4 text-sm bg-gray-50 rounded-xl flex flex-col relative">
               <img
-                src={hostInfo.ava}
-                className="w-full rounded-xl shadow bg-brown-200 object-cover"
+                src={BASE + hostInfo.ava}
+                className="w-full rounded-t-xl shadow bg-brown-200 object-cover"
               />
               <div className="font-bold py-1 text-center">{hostInfo.name}</div>
+              <div className="py-1 text-center">
+                Total rooms: {rooms.length}
+              </div>
             </div>
             <div className="flex flex-wrap w-full justify-evenly">
               {rooms.map((room, index) => {
