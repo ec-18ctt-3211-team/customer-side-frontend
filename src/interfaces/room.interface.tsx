@@ -46,3 +46,5 @@ export interface IResponse {
   rooms: IRoomDetail[];
   total: number;
 }
+
+export type SortType = 'inc' | 'dec';
