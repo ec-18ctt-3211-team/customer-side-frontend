@@ -9,6 +9,7 @@ import { ENDPOINT_URL } from 'constants/api.const';
 import { IMAGES } from 'constants/images.const';
 import { SITE_PAGES } from 'constants/pages.const';
 import { IImage } from 'interfaces/image.interface';
+import { IRoomDetail } from 'interfaces/room.interface';
 import { useEffect, useState } from 'react';
 import { GET } from 'utils/fetcher.utils';
 
@@ -16,10 +17,25 @@ export default function Main(): JSX.Element {
   const [recommended, setRecommended] = useState<IImage[]>([]);
   const [loading, setLoading] = useState(false);
 
-  function getRecommendList() {
+  async function getRecommendList() {
+    const userID = localStorage.getItem('userID');
+    if (!userID) return;
     try {
       setLoading(true);
-      setRecommended([]);
+      const response = await GET(ENDPOINT_URL.GET.getRecommend(userID));
+      if (response.data.valid) {
+        const data: IRoomDetail[] = response.data.rooms;
+        setRecommended(
+          data.map((room) => {
+            return {
+              _id: room._id,
+              path: room.thumnail,
+              title: room.title,
+              href: SITE_PAGES.VIEW_A_PLACE + `/${room._id}`,
+            };
+          }),
+        );
+      }
     } catch (error) {
       console.log(error);
     } finally {
