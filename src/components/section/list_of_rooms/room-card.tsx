@@ -1,7 +1,6 @@
 import { SITE_PAGES } from 'constants/pages.const';
 import { IRoomDetail } from 'interfaces/room.interface';
 import { Link } from 'react-router-dom';
-import { BASE } from 'utils/fetcher.utils';
 
 interface Props {
   detail: IRoomDetail;
@@ -14,7 +13,7 @@ const RoomCard = (props: Props): JSX.Element => {
       className="w-52 h-60 mx-2 my-4 text-sm bg-gray-200 rounded-xl flex flex-col shadow-md hover:shadow-lg relative"
     >
       <img
-        src={BASE + props.detail.thumnail}
+        src={props.detail.thumnail}
         className={[
           'w-full h-4/5 rounded-t-xl bg-brown-200 object-cover',
           'opacity-80 hover:opacity-100',
