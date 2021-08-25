@@ -29,7 +29,7 @@ export default function Main(): JSX.Element {
       list.push({ 
         _id: item.id, 
         title: item.titles, 
-        path: BASE + item.thumnail, 
+        path: item.thumnail, 
         href: SITE_PAGES.LIST_OF_ROOMS.path + `/${item.titles.trim().replace(/ /g, '_')}`
       });
     });
