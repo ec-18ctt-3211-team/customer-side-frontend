@@ -70,12 +70,14 @@ export default function Main(): JSX.Element {
             isLink={true}
           />
           <DivPx size={48} />
-          <ImageSlider
-            title="RECOMMENDED By 3211"
-            limit={4}
-            images={recommended}
-            isLink={true}
-          />
+          {recommended.length > 0 && (
+            <ImageSlider
+              title="RECOMMENDED By 3211"
+              limit={4}
+              images={recommended}
+              isLink={true}
+            />
+          )}
         </Layout>
       ) : (
         <Loading />
