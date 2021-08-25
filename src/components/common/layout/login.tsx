@@ -3,6 +3,8 @@ import { IUserInfo } from 'interfaces/user.interface';
 import { BASE, POST } from 'utils/fetcher.utils';
 import { ENDPOINT_URL } from 'constants/api.const';
 import { NavbarStatus } from './navbar';
+import { useState } from 'react';
+import { Icon, xSmallSolid } from 'utils/icon.utils';
 
 interface Props {
   userInfo: IUserInfo;
@@ -46,7 +48,13 @@ export default function Login(props: Props): JSX.Element {
 
   return (
     <Popup>
-      <div className="w-[350px] h-[350px] flex flex-col">
+      <div className="w-[350px] h-[350px] flex flex-col bg-white rounded-xl">
+        <div className="ml-auto flex px-2 py-1 select-none cursor-pointer hover:text-brown-500"
+          onClick= {(e)=>{
+            setShow(null);
+          }}>
+          <Icon icon={xSmallSolid} className="text-2xl" />
+        </div>
         <Form
           title="login"
           type="login"
