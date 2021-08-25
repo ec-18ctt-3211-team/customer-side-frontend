@@ -19,7 +19,6 @@ export default function BookingTable(props: Props) {
     return (
       <tbody className="text-center">
         {props.booking_history.map((item, index) => {
-          if (index > props.items_per_pages - 1) return;
           return (
             <tr
               key={item._id}
@@ -56,7 +55,7 @@ export default function BookingTable(props: Props) {
 
   useEffect(() => {
     setRender(renderTable());
-  }, [props.currentPage]);
+  }, [props.currentPage, props.booking_history]);
 
   return (
     <div className="bg-white rounded-xl shadow-lg w-full flex flex-col items-center p-6">
