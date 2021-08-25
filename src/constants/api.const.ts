@@ -33,6 +33,8 @@ export const ENDPOINT_URL = {
       pageNumber: number,
     ) => `/order/customer/${userid}?limit=${itemsPerPage}&page=${pageNumber}`,
     getOrderByID: (id: string) => `/order/${id}`,
+    getPinnedCity: '/city/pinned',
+    getRecommend: (id: string) => `/customer/${id}/recommended`,
   },
   POST: {
     register: '/auth/register',

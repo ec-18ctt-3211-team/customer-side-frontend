@@ -1,10 +1,10 @@
 import { Layout, ImageSlider, DivPx, Popup, Loading } from 'components/common';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { RoomDetail, Dialogue } from 'components/section/view-a-place';
-import { GET, BASE } from 'utils/fetcher.utils';
+import { GET } from 'utils/fetcher.utils';
 import { ENDPOINT_URL } from 'constants/api.const';
-import { defaultCustomer, IUserInfo } from 'interfaces/user.interface';
+import { IUserInfo } from 'interfaces/user.interface';
 import { IRoomDetail } from 'interfaces/room.interface';
 
 export default function ViewAPlace(): JSX.Element {
@@ -56,7 +56,7 @@ export default function ViewAPlace(): JSX.Element {
             <ImageSlider
               limit={3}
               images={roomDetails?.photos.map((photo) => {
-                return { ...photo, path: BASE + photo.path };
+                return { ...photo, path: photo.path };
               })}
             />
           )}
