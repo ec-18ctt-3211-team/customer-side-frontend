@@ -47,18 +47,12 @@ export default function Main(): JSX.Element {
         _id: item.id, 
         title: item.titles, 
         path: item.thumnail, 
-        href: SITE_PAGES.LIST_OF_ROOMS.path + `/${item.titles.trim().replace(/ /g, '_')}`
+        href: SITE_PAGES.LIST_OF_ROOMS.path + '/' + item.id,
       });
     });
     setImageList(list);
   }
 
-  useEffect(() => {
-    getPinnedCityData();
-  }, []);
-  useEffect(() => {
-    getImageList();
-  }, [citylist]);
 
   async function getRecommendList() {
     const userID = localStorage.getItem('userID');
@@ -87,8 +81,12 @@ export default function Main(): JSX.Element {
   }
 
   useEffect(() => {
+    getPinnedCityData();
     getRecommendList();
   }, []);
+  useEffect(() => {
+    getImageList();
+  }, [citylist]);
 
   return (
     <div>
