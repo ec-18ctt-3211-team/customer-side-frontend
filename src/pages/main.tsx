@@ -7,7 +7,7 @@ import {
 } from 'components/common';
 import { ENDPOINT_URL } from 'constants/api.const';
 import { SITE_PAGES } from 'constants/pages.const';
-import { DefaultCity, ICityInfo } from 'interfaces/city.interface';
+import { ICityInfo } from 'interfaces/city.interface';
 import { IImage } from 'interfaces/image.interface';
 import { IRoomDetail } from 'interfaces/room.interface';
 import { useEffect, useState } from 'react';
@@ -16,47 +16,39 @@ import { GET } from 'utils/fetcher.utils';
 export default function Main(): JSX.Element {
   const [recommended, setRecommended] = useState<IImage[]>([]);
   const [loading, setLoading] = useState(false);
-
-  const [citylist, setCityList] = useState<ICityInfo[]>([DefaultCity]);
+  const [forceUpdate, setForceUpdate] = useState<boolean>();
+  const [userID, setUserID] = useState(localStorage.getItem('userID') ?? null);
   const [imagelist, setImageList] = useState<IImage[]>([]);
 
-  async function getPinnedCityData(){
-    try{
+  async function getPinnedCityData() {
+    try {
       setLoading(true);
-      const response = await GET(
-        ENDPOINT_URL.GET.getPinnedCity
-      );
-
-      if(response.status == 200){
-        if(response.data.valid === false) {
-          return;
-        }
-        setCityList(response.data.cities);
+      const response = await GET(ENDPOINT_URL.GET.getPinnedCity);
+      if (response.data.valid) {
+        const cities: ICityInfo[] = response.data.cities;
+        setImageList(
+          cities.map((item) => {
+            return {
+              _id: item.id,
+              title: item.titles,
+              path: item.thumnail,
+              href: SITE_PAGES.LIST_OF_ROOMS.path + '/' + item.id,
+            };
+          }),
+        );
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
   }
-  function getImageList(){
-    const list : IImage[] = [];
-    citylist.map((item, index)=>{
-      list.push({ 
-        _id: item.id, 
-        title: item.titles, 
-        path: item.thumnail, 
-        href: SITE_PAGES.LIST_OF_ROOMS.path + '/' + item.id,
-      });
-    });
-    setImageList(list);
-  }
-
 
   async function getRecommendList() {
-    const userID = localStorage.getItem('userID');
-    if (!userID) return;
+    if (!userID) {
+      setRecommended([]);
+      return;
+    }
     try {
       setLoading(true);
       const response = await GET(ENDPOINT_URL.GET.getRecommend(userID));
@@ -68,7 +60,7 @@ export default function Main(): JSX.Element {
               _id: room._id,
               path: room.thumnail,
               title: room.title,
-              href: SITE_PAGES.VIEW_A_PLACE + `/${room._id}`,
+              href: SITE_PAGES.VIEW_A_PLACE.path + `/${room._id}`,
             };
           }),
         );
@@ -82,16 +74,25 @@ export default function Main(): JSX.Element {
 
   useEffect(() => {
     getPinnedCityData();
-    getRecommendList();
   }, []);
+
   useEffect(() => {
-    getImageList();
-  }, [citylist]);
+    const newID = localStorage.getItem('userID') ?? null;
+    setUserID(newID);
+  }, [forceUpdate]);
+
+  useEffect(() => {
+    getRecommendList();
+  }, [userID]);
 
   return (
     <div>
       {!loading ? (
-        <Layout allowSearch>
+        <Layout
+          allowSearch
+          forceUpdate={forceUpdate}
+          setForceUpdate={setForceUpdate}
+        >
           <ImageTag
             data={{ path: '/images/welcome.jpg', _id: 'welcome' }}
             width={100}
