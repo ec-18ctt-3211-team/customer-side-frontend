@@ -9,6 +9,8 @@ import Login from './login';
 
 interface Props {
   allowSearch?: boolean;
+  forceUpdate?: boolean;
+  setForceUpdate?: (value: boolean) => void;
 }
 
 export type NavbarStatus = 'login' | 'signup' | 'loading';
@@ -29,7 +31,13 @@ export default function Navbar(props: Props): JSX.Element {
 
   useEffect(() => {
     setAuthorized(checkAuthorized());
-  }, [localStorage, userInfo]);
+  }, [userInfo]);
+
+  useEffect(() => {
+    if (props.setForceUpdate) {
+      props.setForceUpdate(!props.forceUpdate);
+    }
+  }, [isAuthorized]);
 
   return (
     <div>

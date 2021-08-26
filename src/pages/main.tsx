@@ -16,10 +16,14 @@ import { GET } from 'utils/fetcher.utils';
 export default function Main(): JSX.Element {
   const [recommended, setRecommended] = useState<IImage[]>([]);
   const [loading, setLoading] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState<boolean>();
+  const [userID, setUserID] = useState(localStorage.getItem('userID') ?? null);
 
   async function getRecommendList() {
-    const userID = localStorage.getItem('userID');
-    if (!userID) return;
+    if (!userID) {
+      setRecommended([]);
+      return;
+    }
     try {
       setLoading(true);
       const response = await GET(ENDPOINT_URL.GET.getRecommend(userID));
@@ -31,7 +35,7 @@ export default function Main(): JSX.Element {
               _id: room._id,
               path: room.thumnail,
               title: room.title,
-              href: SITE_PAGES.VIEW_A_PLACE + `/${room._id}`,
+              href: SITE_PAGES.VIEW_A_PLACE.path + `/${room._id}`,
             };
           }),
         );
@@ -44,13 +48,22 @@ export default function Main(): JSX.Element {
   }
 
   useEffect(() => {
+    const newID = localStorage.getItem('userID') ?? null;
+    setUserID(newID);
+  }, [forceUpdate]);
+
+  useEffect(() => {
     getRecommendList();
-  }, []);
+  }, [userID]);
 
   return (
     <div>
       {!loading ? (
-        <Layout allowSearch>
+        <Layout
+          allowSearch
+          forceUpdate={forceUpdate}
+          setForceUpdate={setForceUpdate}
+        >
           <ImageTag
             data={{ path: '/images/welcome.jpg', _id: 'welcome' }}
             width={100}
