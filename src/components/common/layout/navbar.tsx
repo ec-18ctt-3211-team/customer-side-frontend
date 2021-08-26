@@ -48,7 +48,12 @@ export default function Navbar(props: Props): JSX.Element {
         ></Link>
         {props.allowSearch && <Searchbar />}
         <div className="py-2 sm:ml-auto flex flex-row-reverse sm:flex-row justify-center cursor-pointer items-center">
-          <span className="px-4 hover:text-brown-600">Host</span>
+          <a
+            href="https://3211-host.netlify.app"
+            className="px-4 hover:text-brown-600"
+          >
+            Host
+          </a>
           <DivPx size={8} />
           {!isAuthorized ? (
             <div className="flex">
