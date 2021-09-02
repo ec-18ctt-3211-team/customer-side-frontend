@@ -15,7 +15,7 @@ const RoomCard = (props: Props): JSX.Element => {
       <img
         src={props.detail.thumnail}
         className={[
-          'w-full h-4/5 rounded-t-xl bg-brown-200 object-cover',
+          'w-full h-3/5 rounded-t-xl bg-brown-200 object-cover',
           'opacity-80 hover:opacity-100',
         ].join(' ')}
       />
