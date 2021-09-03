@@ -52,8 +52,8 @@ export default function Dialogue(props: Props): JSX.Element {
     <div className="border rounded-md w-full min-h-[350px] flex flex-col justify-between px-2 py-8">
       <div className="w-full py-2 text-center">${total} / night</div>
       <div className="md:px-4 flex flex-wrap justify-around items-center">
-        <div className="py-2">From date:</div>
-        <div className="py-2 w-full md:w-1/3 flex flex-col items-end">
+        <div className="py-2 w-28">From date:</div>
+        <div className="py-2 w-full md:w-1/3 flex flex-col items-center md:items-end">
           <DatePicker
             placeholderText="Enter start date"
             selected={dayStart}
@@ -66,8 +66,8 @@ export default function Dialogue(props: Props): JSX.Element {
         </div>
       </div>
       <div className="md:px-4 flex flex-wrap justify-around items-center">
-        <div className="py-2">To date:</div>
-        <div className="py-2 w-full md:w-1/3 flex flex-col items-end">
+        <div className="py-2 w-28">To date:</div>
+        <div className="py-2 w-full md:w-1/3 flex flex-col  items-center md:items-end">
           <DatePicker
             placeholderText="Enter end date"
             selected={dayEnd}
