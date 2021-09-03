@@ -14,6 +14,7 @@ export interface IBookingInfo {
   fromDate: Date;
   toDate: Date;
   payment_method: PaymentType;
+  price?: number;
 }
 
 export interface IStatus {

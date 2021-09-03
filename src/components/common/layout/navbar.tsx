@@ -3,7 +3,7 @@ import { Searchbar, DivPx, Loading } from '..';
 import { SITE_PAGES } from 'constants/pages.const';
 import { useState, useEffect } from 'react';
 import { IUserInfo, defaultCustomer } from 'interfaces/user.interface';
-import { Icon, logoutOutline } from 'utils/icon.utils';
+import { Icon, Outline } from 'utils/icon.utils';
 import Signup from './signup';
 import Login from './login';
 
@@ -39,15 +39,21 @@ export default function Navbar(props: Props): JSX.Element {
     }
   }, [isAuthorized]);
 
+  useEffect(() => {
+    setMessage('');
+  }, [isShow]);
+
   return (
     <div>
-      <div className="flex flex-wrap p-4 w-screen sticky border-b">
-        <Link
-          to={SITE_PAGES.MAIN.path}
-          className="w-10 h-10 px-4 my-2 cursor-pointer rounded-full bg-gray-300"
-        ></Link>
+      <div className="flex flex-col sm:flex-row items-center p-4 w-screen sticky border-b">
+        <Link to={SITE_PAGES.MAIN.path}>
+          <img
+            src="/images/logo.jpg"
+            className="w-10 h-10 cursor-pointer rounded-full bg-gray-300 object-cover"
+          />
+        </Link>
         {props.allowSearch && <Searchbar />}
-        <div className="py-2 sm:ml-auto flex flex-row-reverse sm:flex-row justify-center cursor-pointer items-center">
+        <div className="py-2 sm:ml-auto flex flex-row justify-center cursor-pointer items-center">
           <a
             href="https://3211-host.netlify.app"
             className="px-4 hover:text-brown-600"
@@ -95,7 +101,7 @@ export default function Navbar(props: Props): JSX.Element {
                   history.push(SITE_PAGES.MAIN.path);
                 }}
               >
-                <Icon icon={logoutOutline} />
+                <Icon icon={Outline.logout} />
               </span>
             </div>
           )}
@@ -106,6 +112,8 @@ export default function Navbar(props: Props): JSX.Element {
           userInfo={userInfo}
           setUserInfo={setUserInfo}
           setShow={setShow}
+          message={message}
+          setMessage={setMessage}
         />
       )}
       {isShow === 'login' && (

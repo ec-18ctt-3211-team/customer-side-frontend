@@ -17,7 +17,7 @@ export default function Layout(props: Props): JSX.Element {
         forceUpdate={props.forceUpdate}
         setForceUpdate={props.setForceUpdate}
       />
-      <div className="p-8">{props.children}</div>
+      <div className="px-2 py-8 sm:p-8">{props.children}</div>
       <div className="mt-auto">
         <Footer />
       </div>

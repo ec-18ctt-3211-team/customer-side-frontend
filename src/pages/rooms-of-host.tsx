@@ -17,20 +17,26 @@ export default function RoomsOfHost(): JSX.Element {
   const [maxPage, setMaxPage] = useState(1);
   const [hostInfo, setHostInfo] = useState<IUserInfo>();
   const [rooms, setRooms] = useState<IRoomDetail[]>();
+  const [loading, setLoading] = useState(false);
 
   async function fetchHost() {
     try {
+      setLoading(true);
       const response = await GET(ENDPOINT_URL.GET.getCustomerByID(hostID));
       if (response.data.valid) {
         setHostInfo(response.data.customer);
       }
     } catch (error) {
+      alert('Unexpected error, please try again!');
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
 
   async function fetchRooms() {
     try {
+      setLoading(true);
       const response = await GET(
         ENDPOINT_URL.GET.getRoomsByHostID(
           hostID,
@@ -43,7 +49,10 @@ export default function RoomsOfHost(): JSX.Element {
         setMaxPage(Math.ceil(response.data.total / itemsPerPage));
       }
     } catch (error) {
+      alert('Unexpected error, please try again!');
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -57,27 +66,33 @@ export default function RoomsOfHost(): JSX.Element {
 
   return (
     <Layout allowSearch>
-      {hostInfo && rooms ? (
+      {!loading && hostInfo && rooms ? (
         <div className="flex flex-col min-h-[80vh]">
-          <div className="flex">
-            <div className="w-52 h-60 ml-2 mr-10 my-4 text-sm bg-gray-50 rounded-xl flex flex-col relative">
+          <div className="flex flex-col md:flex-row justify-center">
+            <div className="w-full md:w-52 h-36 md:h-60 ml-2 mr-10 my-4 text-sm md:bg-gray-50 md:rounded-xl flex md:flex-col">
               <img
                 src={BASE + hostInfo.ava}
-                className="w-full rounded-t-xl shadow bg-brown-200 object-cover"
+                className="w-1/2 md:w-full h-full rounded-xl md:rounded-none md:rounded-t-xl shadow bg-brown-200 object-cover"
               />
-              <div className="font-bold py-1 text-center">{hostInfo.name}</div>
-              <div className="py-1 text-center">
-                Total rooms: {rooms.length}
+              <div className="w-1/2 md:w-full flex flex-col justify-center">
+                <div className="font-bold py-1 text-center">
+                  {hostInfo.name}
+                </div>
+                <div className="py-1 text-center">
+                  Total rooms: {rooms.length}
+                </div>
               </div>
             </div>
-            <div className="flex flex-wrap w-full">
-              {rooms.map((room, index) => {
-                return (
-                  <div className="mx-2">
-                    <RoomCard detail={room} key={index} />
-                  </div>
-                );
-              })}
+            <div className="flex w-full justify-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {rooms.map((room, index) => {
+                  return (
+                    <div className="mx-2">
+                      <RoomCard detail={room} key={index} />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
           <div className="mt-auto">

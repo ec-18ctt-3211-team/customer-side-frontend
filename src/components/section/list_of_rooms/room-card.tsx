@@ -22,7 +22,7 @@ const RoomCard = (props: Props): JSX.Element => {
       <div className="w-full py-2 px-3 bg-white rounded-b-xl">
         <div className="font-bold py-1 text-center">{props.detail.title}</div>
         <div className="text-xs italic py-1 text-right">
-          {props.detail.max_guest} guest(s)
+          {props.detail.max_guest} guest(s) - {props.detail.address.district}
         </div>
         <div className="text-right py-1">
           ${props.detail.normal_price} /night

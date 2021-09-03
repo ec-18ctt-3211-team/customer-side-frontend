@@ -30,7 +30,7 @@ export default function RoomDetail(props: Props): JSX.Element {
       <div className="py-4 text-right">
         {getAddressString(props.roomDetails.address)}
       </div>
-      <div className="py-4">{props.roomDetails.description}</div>
+      <div className="py-4 text-sm">{props.roomDetails.description}</div>
     </div>
   );
 }

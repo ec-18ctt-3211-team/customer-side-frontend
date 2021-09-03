@@ -1,5 +1,4 @@
 import { SortType } from 'interfaces/room.interface';
-import { useState } from 'react';
 
 interface Props {
   total_result: number;

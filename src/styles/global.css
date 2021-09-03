@@ -1,32 +1,5 @@
 @import '~react-datepicker/dist/react-datepicker.css';
-
-@font-face {
-  font-family: 'rosario';
-  src: url('./font/rosario.regular.otf') format('otf');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'rosario';
-  src: url('./font/rosario.bold.otf') format('otf');
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'rosario';
-  src: url('./font/rosario.italic.otf') format('otf');
-  font-weight: normal;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: 'rosario';
-  src: url('./font/rosario.bold-italic.otf') format('otf');
-  font-weight: bold;
-  font-style: italic;
-}
+@import url('https://fonts.googleapis.com/css2?family=Rosario:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -42,7 +15,7 @@
 :root,
 input,
 button {
-  @apply font-custom;
+  font-family: 'Rosario', sans-serif;
   letter-spacing: 2px;
   line-height: 1;
   font-size: 18px;

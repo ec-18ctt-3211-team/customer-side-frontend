@@ -18,7 +18,7 @@ export default function Main(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [forceUpdate, setForceUpdate] = useState<boolean>();
   const [userID, setUserID] = useState(localStorage.getItem('userID') ?? null);
-  const [imagelist, setImageList] = useState<IImage[]>([]);
+  const [cityList, setCityList] = useState<IImage[]>();
 
   async function getPinnedCityData() {
     try {
@@ -26,7 +26,7 @@ export default function Main(): JSX.Element {
       const response = await GET(ENDPOINT_URL.GET.getPinnedCity);
       if (response.data.valid) {
         const cities: ICityInfo[] = response.data.cities;
-        setImageList(
+        setCityList(
           cities.map((item) => {
             return {
               _id: item.id,
@@ -38,6 +38,7 @@ export default function Main(): JSX.Element {
         );
       }
     } catch (error) {
+      alert('Unexpected error, please try again!');
       console.log(error);
     } finally {
       setLoading(false);
@@ -66,6 +67,7 @@ export default function Main(): JSX.Element {
         );
       }
     } catch (error) {
+      alert('Unexpected error, please try again!');
       console.log(error);
     } finally {
       setLoading(false);
@@ -87,7 +89,7 @@ export default function Main(): JSX.Element {
 
   return (
     <div>
-      {!loading ? (
+      {!loading && cityList ? (
         <Layout
           allowSearch
           forceUpdate={forceUpdate}
@@ -98,24 +100,24 @@ export default function Main(): JSX.Element {
             width={100}
           />
           <DivPx size={32} />
-          <div className="px-32 text-lg">Welcome to 3211,</div>
+          <div className="px-12 lg:px-32 text-lg">Welcome to 3211,</div>
           {!localStorage.getItem('userID') && (
-            <div className="px-32 text-lg">
+            <div className="px-12 lg:px-32 text-lg">
               Please login or sign up to explore more!
             </div>
           )}
           <DivPx size={48} />
           <ImageSlider
             title="SIGNIFICANT PLACES TO STAY"
-            limit={5}
-            images={imagelist}
+            limit={cityList.length < 5 ? cityList.length : 5}
+            images={cityList}
             isLink={true}
           />
           <DivPx size={48} />
           {recommended.length > 0 && (
             <ImageSlider
               title="RECOMMENDED By 3211"
-              limit={4}
+              limit={recommended.length < 4 ? recommended.length : 4}
               images={recommended}
               isLink={true}
             />

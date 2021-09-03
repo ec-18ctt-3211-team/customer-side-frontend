@@ -1,12 +1,6 @@
 import { Button, formType, Input } from '.';
-import {
-  Icon,
-  envelopeOutline,
-  userSolid,
-  phoneOutline,
-  passwordOutline,
-} from 'utils/icon.utils';
-import { useState } from 'react';
+import { Icon, Outline, Solid } from 'utils/icon.utils';
+import { useEffect, useState } from 'react';
 import { IUserInfo } from 'interfaces/user.interface';
 
 interface Props {
@@ -21,7 +15,15 @@ interface Props {
 
 export default function Form(props: Props): JSX.Element {
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isMatched, setMatched] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (password === confirmPassword) {
+      setMatched(true);
+      props.setUserInfo({ ...props.userInfo, password });
+    }
+  }, [password, confirmPassword]);
 
   return (
     <div className="bg-white rounded-xl shadow-lg h-full w-full flex flex-col justify-between items-center p-6 select-none">
@@ -37,7 +39,7 @@ export default function Form(props: Props): JSX.Element {
           border="full"
           type="text"
           placeholder="email"
-          icon={{ icon: <Icon icon={envelopeOutline} />, position: 'right' }}
+          icon={{ icon: <Icon icon={Outline.envelope} />, position: 'right' }}
           value={props.userInfo.email}
           onChange={(e) =>
             props.setUserInfo({ ...props.userInfo, email: e.target.value })
@@ -52,7 +54,7 @@ export default function Form(props: Props): JSX.Element {
             border="full"
             type="text"
             placeholder="full name"
-            icon={{ icon: <Icon icon={userSolid} />, position: 'right' }}
+            icon={{ icon: <Icon icon={Solid.user} />, position: 'right' }}
             value={props.userInfo.name}
             onChange={(e) =>
               props.setUserInfo({
@@ -64,14 +66,14 @@ export default function Form(props: Props): JSX.Element {
         </div>
       )}
 
-      {/* phoen number */}
+      {/* phone number */}
       {props.type !== 'login' && (
         <div className="py-2 h-full">
           <Input
             border="full"
             type="text"
             placeholder="phone number"
-            icon={{ icon: <Icon icon={phoneOutline} />, position: 'right' }}
+            icon={{ icon: <Icon icon={Outline.phone} />, position: 'right' }}
             value={props.userInfo.phone}
             onChange={(e) =>
               props.setUserInfo({
@@ -88,8 +90,8 @@ export default function Form(props: Props): JSX.Element {
         <Input
           border="full"
           type="password"
-          placeholder="password"
-          icon={{ icon: <Icon icon={passwordOutline} />, position: 'right' }}
+          placeholder={props.type === 'profile' ? 'new password' : 'password'}
+          icon={{ icon: <Icon icon={Outline.password} />, position: 'right' }}
           value={password}
           onChange={(e) => {
             if (props.type === 'login')
@@ -109,15 +111,9 @@ export default function Form(props: Props): JSX.Element {
             border="full"
             type="password"
             placeholder="confirm password"
-            icon={{ icon: <Icon icon={passwordOutline} />, position: 'right' }}
+            icon={{ icon: <Icon icon={Outline.password} />, position: 'right' }}
             onChange={(e) => {
-              if (password === e.target.value && password !== '') {
-                setMatched(true);
-                props.setUserInfo({
-                  ...props.userInfo,
-                  password: e.target.value,
-                });
-              } else setMatched(false);
+              setConfirmPassword(e.target.value);
             }}
           />
         </div>
