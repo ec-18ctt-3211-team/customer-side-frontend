@@ -2,9 +2,6 @@ module.exports = {
   mode: 'jit',
   theme: {
     extend: {},
-    fontFamily: {
-      custom: ['rosario'],
-    },
     colors: {
       transparent: 'transparent',
       current: 'currentColor',

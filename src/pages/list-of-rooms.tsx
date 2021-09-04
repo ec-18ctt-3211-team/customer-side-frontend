@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Layout, Loading, Pagination, Popup } from 'components/common';
+import { Layout, Loading, Pagination } from 'components/common';
 import { Filterbar, RoomCard } from 'components/section/list_of_rooms';
 import { IRoomDetail, IResponse, SortType } from 'interfaces/room.interface';
 import { GET } from 'utils/fetcher.utils';
@@ -10,6 +10,8 @@ const LIMIT = 20;
 
 export default function ListOfRooms(): JSX.Element {
   const location = useLocation();
+  const path = location.pathname.split('/');
+  const city = path[path.length - 1];
   const [currentPage, setCurrentPage] = useState(0);
   const [listOfRooms, setListOfRooms] = useState<IRoomDetail[]>();
   const [totalResult, setTotalResult] = useState(0);
@@ -20,8 +22,6 @@ export default function ListOfRooms(): JSX.Element {
   async function fetchRooms() {
     try {
       setLoading(true);
-      const path = location.pathname.split('/');
-      const city = path[path.length - 1];
       const response = await GET(
         ENDPOINT_URL.GET.getRoomsByCity(
           LIMIT,
@@ -42,6 +42,7 @@ export default function ListOfRooms(): JSX.Element {
         setTotalResult(data.total);
       }
     } catch (error) {
+      alert('Unexpected error, please try again!');
       console.log(error);
     } finally {
       setLoading(false);
@@ -61,10 +62,12 @@ export default function ListOfRooms(): JSX.Element {
             sorting={sorting}
             setSorting={setSorting}
           />
-          <div className="flex flex-wrap w-full px-6">
-            {listOfRooms.map((room, index) => {
-              return <RoomCard detail={room} key={index} />;
-            })}
+          <div className="flex w-full justify-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+              {listOfRooms.map((room, index) => {
+                return <RoomCard detail={room} key={index} />;
+              })}
+            </div>
           </div>
           <div className="mt-auto">
             <Pagination

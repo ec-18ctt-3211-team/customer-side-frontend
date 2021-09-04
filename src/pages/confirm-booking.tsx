@@ -8,14 +8,10 @@ import {
 } from 'components/section/confirm-booking';
 import { IBookingInfo } from 'interfaces/booking.interface';
 import { IUserInfo, defaultCustomer } from 'interfaces/user.interface';
-import { GET } from 'utils/fetcher.utils';
-import { ENDPOINT_URL } from 'constants/api.const';
 import { IRoomDetail } from 'interfaces/room.interface';
+import { GET } from 'utils/fetcher.utils';
 import { formatDateString } from 'utils/datetime.utils';
-
-const today = new Date();
-const tomorrow = new Date();
-tomorrow.setDate(today.getDate() + 1);
+import { ENDPOINT_URL } from 'constants/api.const';
 
 export default function ConfirmBooking(): JSX.Element {
   const location = useLocation();
@@ -34,6 +30,7 @@ export default function ConfirmBooking(): JSX.Element {
       const response = await GET(ENDPOINT_URL.GET.getRoomsByID(roomID));
       if (response.data.valid) setRoomDetails(response.data.room);
     } catch (error) {
+      alert('Unexpected error, please try again!');
       console.log(error);
     } finally {
       setLoading(false);
@@ -50,6 +47,7 @@ export default function ConfirmBooking(): JSX.Element {
         setCustomerInfo(response.data.customer);
       }
     } catch (error) {
+      alert('Unexpected error, please try again!');
       console.log(error);
     } finally {
       setLoading(false);
@@ -61,10 +59,10 @@ export default function ConfirmBooking(): JSX.Element {
     let data;
     if (storage) data = JSON.parse(storage);
     return {
-      totalAdults: data.totalAdults ?? 1,
-      totalKids: data.totalKids ?? 0,
-      fromDate: formatDateString(data.fromDate) ?? today,
-      toDate: formatDateString(data.toDate) ?? tomorrow,
+      totalAdults: data.totalAdults,
+      totalKids: data.totalKids,
+      fromDate: formatDateString(data.fromDate),
+      toDate: formatDateString(data.toDate),
       payment_method: data.payment_method ?? 'paypal',
     };
   }
@@ -77,9 +75,9 @@ export default function ConfirmBooking(): JSX.Element {
   return (
     <Layout>
       {!loading && roomDetails ? (
-        <div className="flex justify-between w-full">
+        <div className="flex flex-wrap-reverse justify-between w-full">
           {/* edit data */}
-          <div className="lg:w-1/3 h-full flex flex-col">
+          <div className="w-full lg:w-1/3 flex flex-col justify-between">
             <BookingInfo
               bookingDetail={bookingDetail}
               setBookingDetail={setBookingDetail}
@@ -92,11 +90,13 @@ export default function ConfirmBooking(): JSX.Element {
           </div>
 
           {/* confirm data */}
-          <ReviewInfo
-            bookingDetail={bookingDetail}
-            customer={customerInfo}
-            room={roomDetails}
-          />
+          <div className="w-full lg:w-2/3 flex justify-center lg:justify-end">
+            <ReviewInfo
+              bookingDetail={bookingDetail}
+              customerInfo={customerInfo}
+              room={roomDetails}
+            />
+          </div>
         </div>
       ) : (
         <Loading />

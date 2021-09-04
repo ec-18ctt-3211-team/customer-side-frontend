@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ImageTag } from 'components/common';
 import { IImage } from 'interfaces/image.interface';
-import { Icon, leftSmallOutline } from 'utils/icon.utils';
+import { Icon, Outline } from 'utils/icon.utils';
 
 interface Props {
   title?: string;
@@ -37,7 +37,7 @@ export default function ImageSlider(props: Props): JSX.Element {
           ].join(' ')}
           onClick={() => reloadImage('left')}
         >
-          <Icon icon={leftSmallOutline} style={{ fontSize: '30px' }} />
+          <Icon icon={Outline.left} style={{ fontSize: '30px' }} />
         </div>
         {props.images.map((image, index) => {
           if (index < slider.start || index >= slider.end) return;
@@ -53,7 +53,7 @@ export default function ImageSlider(props: Props): JSX.Element {
           ].join(' ')}
           onClick={() => reloadImage('right')}
         >
-          <Icon icon={leftSmallOutline} style={{ fontSize: '30px' }} />
+          <Icon icon={Outline.left} style={{ fontSize: '30px' }} />
         </div>
       </div>
     </div>

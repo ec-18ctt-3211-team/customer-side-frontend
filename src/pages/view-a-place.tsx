@@ -21,6 +21,7 @@ export default function ViewAPlace(): JSX.Element {
         setHostDetails(response.data.customer);
       }
     } catch (error) {
+      alert('Unexpected error, please try again!');
       console.log(error);
     } finally {
       setLoading(false);
@@ -38,6 +39,7 @@ export default function ViewAPlace(): JSX.Element {
         fetchHost(response.data.room.host_id);
       }
     } catch (error) {
+      alert('Unexpected error, please try again!');
       console.log(error);
     } finally {
       setLoading(false);
@@ -54,7 +56,9 @@ export default function ViewAPlace(): JSX.Element {
         <div>
           {roomDetails.photos.length > 0 && (
             <ImageSlider
-              limit={3}
+              limit={
+                roomDetails.photos.length < 3 ? roomDetails.photos.length : 3
+              }
               images={roomDetails?.photos.map((photo) => {
                 return { ...photo, path: photo.path };
               })}

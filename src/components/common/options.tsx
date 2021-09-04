@@ -7,9 +7,10 @@ interface Props<T> {
 
 export default function SelectOptions<T>(props: Props<T>): JSX.Element {
   return (
-    <div className="border-b-2 flex justify-between px-4">
+    <div className="flex flex-wrap md:flex-nowrap justify-between w-full">
+      {props.label && <div className="py-1">{props.label}</div>}
       <select
-        className="pr-2 outline-none w-full"
+        className="px-4 py-1 outline-none w-full border-b-2"
         value={JSON.stringify(props.currentOptions)}
         onChange={(e) => props.setCurrentOptions(JSON.parse(e.target.value))}
       >

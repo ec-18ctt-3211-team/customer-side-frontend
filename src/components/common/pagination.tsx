@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Icon, leftSmallOutline, moreHorizontalSolid } from 'utils/icon.utils';
+import { Icon, Outline, Solid } from 'utils/icon.utils';
 
 const LIMIT = 5;
 
@@ -79,7 +79,7 @@ export const Pagination = (props: Props): JSX.Element => {
     <div className="flex justify-center items-center w-full">
       <PaginationItem isDisable={currentPage === minPage} isIcon={true}>
         <div onClick={() => prevPage()}>
-          <Icon icon={leftSmallOutline} />
+          <Icon icon={Outline.left} />
         </div>
       </PaginationItem>
 
@@ -87,7 +87,7 @@ export const Pagination = (props: Props): JSX.Element => {
 
       {currentPage < maxPage && base < Math.trunc((maxPage - 1) / LIMIT) && (
         <PaginationItem>
-          <Icon icon={moreHorizontalSolid} />
+          <Icon icon={Solid.moreHorizontal} />
         </PaginationItem>
       )}
 
@@ -99,7 +99,7 @@ export const Pagination = (props: Props): JSX.Element => {
 
       <PaginationItem isDisable={currentPage === maxPage - 1} isIcon={true}>
         <div className="rotate-180" onClick={() => nextPage()}>
-          <Icon icon={leftSmallOutline} />
+          <Icon icon={Outline.left} />
         </div>
       </PaginationItem>
     </div>

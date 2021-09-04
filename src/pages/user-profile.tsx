@@ -4,7 +4,7 @@ import { BookingTable } from 'components/section/user-profile';
 import { IUserInfo } from 'interfaces/user.interface';
 import { IOrderInfo } from 'interfaces/booking.interface';
 import { GET, PUT } from 'utils/fetcher.utils';
-import { ENDPOINT_URL } from 'constants/api.const';
+import { emailValidRegex, ENDPOINT_URL } from 'constants/api.const';
 
 const itemsPerPage = 6;
 
@@ -14,6 +14,8 @@ export default function UserProfile(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [maxPage, setMaxPage] = useState(1);
+  const [currentProfile, setCurrentProfile] = useState<IUserInfo>();
+  const [message, setMessage] = useState('');
 
   async function fetchUserInfo() {
     const userID = localStorage.getItem('userID');
@@ -23,8 +25,10 @@ export default function UserProfile(): JSX.Element {
       const response = await GET(ENDPOINT_URL.GET.getCustomerByID(userID));
       if (response.data.valid) {
         setUserInfo(response.data.customer);
+        setCurrentProfile(response.data.customer);
       }
     } catch (error) {
+      alert('Unexpected error, please try again!');
       console.log(error);
     } finally {
       setLoading(false);
@@ -48,6 +52,7 @@ export default function UserProfile(): JSX.Element {
         setMaxPage(Math.ceil(response.data.total / itemsPerPage));
       }
     } catch (error) {
+      alert('Unexpected error, please try again!');
       console.log(error);
     } finally {
       setLoading(false);
@@ -56,13 +61,31 @@ export default function UserProfile(): JSX.Element {
 
   async function updateProfile() {
     if (!userInfo) return;
+    if (
+      userInfo.email === '' ||
+      userInfo.name === '' ||
+      userInfo.phone === '' ||
+      userInfo.password === ''
+    ) {
+      setMessage('All fields must be filled');
+      return;
+    }
+    if (!userInfo.email.match(emailValidRegex)) {
+      setMessage('Please input valid email');
+      return;
+    }
+    if (!userInfo.phone.match(/[0-9]/)) {
+      setMessage('Please input valid phone number');
+      return;
+    }
     try {
       setLoading(true);
       const payload = {
-        email: userInfo.email,
-        name: userInfo.name,
-        password: userInfo.password,
-        phone: userInfo.phone,
+        ...currentProfile,
+        email: userInfo.email !== '' && userInfo.email,
+        name: userInfo.name !== '' && userInfo.name,
+        password: userInfo.password !== '' && userInfo.password,
+        phone: userInfo.phone !== '' && userInfo.phone,
       };
       const response = await PUT(
         ENDPOINT_URL.PUT.updateCustomerByID(userInfo._id),
@@ -72,6 +95,7 @@ export default function UserProfile(): JSX.Element {
         fetchUserInfo();
       }
     } catch (error) {
+      setMessage('Unexpected error, please try again!');
       console.log(error);
     } finally {
       setLoading(false);
@@ -86,15 +110,17 @@ export default function UserProfile(): JSX.Element {
   return (
     <Layout>
       {!loading && userInfo && bookingHistory ? (
-        <div className="-m-8 p-8 bg-gray-200 w-screen h-screen flex justify-between">
-          <div className="w-[450px] h-[500px]">
-            <Form
-              title="User profile"
-              type="profile"
-              button={{ label: 'Update', onClick: updateProfile }}
-              userInfo={userInfo}
-              setUserInfo={setUserInfo}
-            />
+        <div className="-m-8 p-8 bg-gray-200 w-screen min-h-screen flex flex-col lg:flex-row justify-between">
+          <div className="flex items-center justify-center lg:justify-start lg:items-start">
+            <div className="w-[450px] h-[500px]">
+              <Form
+                title="User profile"
+                type="profile"
+                button={{ label: 'Update', onClick: updateProfile }}
+                userInfo={userInfo}
+                setUserInfo={setUserInfo}
+              />
+            </div>
           </div>
           <DivPx size={48} />
           <BookingTable

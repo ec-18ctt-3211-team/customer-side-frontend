@@ -1,5 +1,8 @@
 import { SortType } from 'interfaces/room.interface';
 
+export const emailValidRegex =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]*$/;
+
 export const ENDPOINT_URL = {
   GET: {
     getRoomsByCity: (
