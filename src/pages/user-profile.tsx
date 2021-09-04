@@ -14,7 +14,6 @@ export default function UserProfile(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [maxPage, setMaxPage] = useState(1);
-  const [currentProfile, setCurrentProfile] = useState<IUserInfo>();
   const [message, setMessage] = useState('');
 
   async function fetchUserInfo() {
@@ -24,8 +23,8 @@ export default function UserProfile(): JSX.Element {
       setLoading(true);
       const response = await GET(ENDPOINT_URL.GET.getCustomerByID(userID));
       if (response.data.valid) {
-        setUserInfo(response.data.customer);
-        setCurrentProfile(response.data.customer);
+        setUserInfo({ ...response.data.customer, password: '' });
+        localStorage.setItem('username', response.data.customer.name);
       }
     } catch (error) {
       alert('Unexpected error, please try again!');
@@ -61,15 +60,6 @@ export default function UserProfile(): JSX.Element {
 
   async function updateProfile() {
     if (!userInfo) return;
-    if (
-      userInfo.email === '' ||
-      userInfo.name === '' ||
-      userInfo.phone === '' ||
-      userInfo.password === ''
-    ) {
-      setMessage('All fields must be filled');
-      return;
-    }
     if (!userInfo.email.match(emailValidRegex)) {
       setMessage('Please input valid email');
       return;
@@ -80,13 +70,13 @@ export default function UserProfile(): JSX.Element {
     }
     try {
       setLoading(true);
-      const payload = {
-        ...currentProfile,
-        email: userInfo.email !== '' && userInfo.email,
-        name: userInfo.name !== '' && userInfo.name,
-        password: userInfo.password !== '' && userInfo.password,
-        phone: userInfo.phone !== '' && userInfo.phone,
-      };
+      const payload = new URLSearchParams();
+      if (userInfo.email !== '') payload.append('email', userInfo.email);
+      if (userInfo.name !== '') payload.append('name', userInfo.name);
+      if (userInfo.phone !== '') payload.append('phone', userInfo.phone);
+      if (userInfo.password !== '')
+        payload.append('password', userInfo.password);
+
       const response = await PUT(
         ENDPOINT_URL.PUT.updateCustomerByID(userInfo._id),
         payload,
