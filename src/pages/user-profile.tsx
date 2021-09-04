@@ -119,6 +119,7 @@ export default function UserProfile(): JSX.Element {
                 button={{ label: 'Update', onClick: updateProfile }}
                 userInfo={userInfo}
                 setUserInfo={setUserInfo}
+                message={message}
               />
             </div>
           </div>
