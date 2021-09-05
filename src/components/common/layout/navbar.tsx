@@ -39,10 +39,6 @@ export default function Navbar(props: Props): JSX.Element {
     }
   }, [isAuthorized]);
 
-  useEffect(() => {
-    setMessage('');
-  }, [isShow]);
-
   return (
     <div>
       <div className="flex flex-col sm:flex-row items-center p-4 w-screen sticky border-b">
@@ -63,11 +59,25 @@ export default function Navbar(props: Props): JSX.Element {
           <DivPx size={8} />
           {!isAuthorized ? (
             <div className="flex">
-              <span className="px-4" onClick={() => setShow('signup')}>
+              <span
+                className="px-4"
+                onClick={() => {
+                  setMessage('');
+                  setUserInfo(defaultCustomer);
+                  setShow('signup');
+                }}
+              >
                 Sign up
               </span>
               <DivPx size={8} />
-              <span className="px-4" onClick={() => setShow('login')}>
+              <span
+                className="px-4"
+                onClick={() => {
+                  setMessage('');
+                  setUserInfo(defaultCustomer);
+                  setShow('login');
+                }}
+              >
                 Login
               </span>
             </div>

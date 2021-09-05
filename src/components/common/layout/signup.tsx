@@ -47,8 +47,10 @@ export default function Signup(props: Props): JSX.Element {
         setShow('login');
         props.setMessage('');
       }
-    } catch (error) {
-      props.setMessage('Unexpected error, please try again!');
+    } catch (error: any) {
+      if (error.response?.data?.message)
+        props.setMessage(error.response.data.message);
+      else props.setMessage('Unexpected error, please try again!');
       console.log(error);
       setShow('signup');
     }

@@ -22,7 +22,7 @@ export default function Form(props: Props): JSX.Element {
     if (password === confirmPassword) {
       setMatched(true);
       props.setUserInfo({ ...props.userInfo, password });
-    }
+    } else setMatched(false);
   }, [password, confirmPassword]);
 
   return (
