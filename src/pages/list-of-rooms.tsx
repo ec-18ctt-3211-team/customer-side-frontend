@@ -33,12 +33,8 @@ export default function ListOfRooms(): JSX.Element {
       );
       const data: IResponse = response.data;
       if (data.valid) {
-        const numberOfPages = Math.floor(data.rooms.length / LIMIT);
-
         setListOfRooms(data.rooms);
-        setTotalPages(
-          data.rooms.length % LIMIT === 0 ? numberOfPages : numberOfPages + 1,
-        );
+        setTotalPages(Math.max(Math.ceil(data.total / LIMIT), 1));
         setTotalResult(data.total);
       }
     } catch (error) {
