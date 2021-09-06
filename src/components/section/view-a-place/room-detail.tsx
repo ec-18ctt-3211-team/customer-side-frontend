@@ -30,7 +30,7 @@ export default function RoomDetail(props: Props): JSX.Element {
       <div className="py-4 text-right">
         {getAddressString(props.roomDetails.address)}
       </div>
-      <div className="py-4 text-sm whitespace-pre-wrap">
+      <div className="py-4 text-sm break-all">
         {props.roomDetails.description}
       </div>
     </div>
